@@ -100,7 +100,5 @@ function m.generate(wks)
 			prjpath = path.getrelative(prj.workspace.location, prjpath)
 			p.w('include(%s)', prjpath)
 		end,
-
-		--TODO wks.startproject
 	})
 end
