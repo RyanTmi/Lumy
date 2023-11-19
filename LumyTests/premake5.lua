@@ -1,4 +1,4 @@
-project "LumySandbox"
+project "LumyTests"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"

@@ -1,9 +1,12 @@
 .idea/
 .vscode/
-.DS_Store
+.clion_cmake-build
 
 bin/
 build/
 
-CMakeLists.txt
+profiles/
+
+.DS_Store
+**/CMakeLists.txt
 *.cmake

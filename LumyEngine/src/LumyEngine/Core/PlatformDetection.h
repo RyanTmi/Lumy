@@ -1,3 +1,20 @@
+/**
+ * @file PlatformDetection.h
+ * @author Ryan Timeus (timeusryan@gmail.com)
+ * @brief Platform detection macros for the game engine.
+ * 
+ * This file provides macros to detect the target platform during compilation.
+ * It defines platform-specific macros such as LM_PLATFORM_WINDOWS, LM_PLATFORM_IOS,
+ * LM_PLATFORM_MACOS, LM_PLATFORM_ANDROID, LM_PLATFORM_LINUX, based on the target environment.
+ * Additionally, it includes error directives to inform about unsupported platforms.
+ * 
+ * @version 0.1
+ * @date 2023-11-18
+ * 
+ * @copyright Lumy Game Engine is Copyright (c) Ryan Timeus 2023-2024
+ * 
+ */
+
 #pragma once
 
 #if defined(_WIN32)
@@ -29,3 +46,4 @@
 #else
     #error "Unknown platform!"
 #endif
+
