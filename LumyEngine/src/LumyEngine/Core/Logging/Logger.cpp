@@ -27,9 +27,28 @@ namespace Lumy::ConsoleColor
 
 namespace Lumy
 {
-    Logger::Logger(ConfigFlag logFormat, const std::string& name, bool logToFile)
-        : m_Name("[" + name + "]"), m_LogFileName(logToFile ? name + ".log" : ""), m_ConfigFlags(logFormat)
+    Logger::Logger(const std::string& name, Config consoleConfig, Config logFileConfig)
+        : m_Name("[" + name + "]"), m_ConsoleConfig(consoleConfig), m_LogFileConfig(logFileConfig)
     {
+        m_LogFile = std::ofstream("logs/" + name + ".log");
+        if (!m_LogFile.is_open())
+        {
+            // TODO - Error handling
+        }
+    }
+
+    Logger::Logger(const std::string& name, Config consoleConfig)
+        : m_Name("[" + name + "]"), m_ConsoleConfig(consoleConfig), m_LogFileConfig({FormatFlag_None, false})
+    {
+    }
+
+    Logger::~Logger()
+    {
+        if (m_LogFile.is_open())
+        {
+            m_LogFile.flush();
+            m_LogFile.close();
+        }
     }
 
     std::map<Logger::Level, const char*> Logger::s_LevelToColor
@@ -52,16 +71,23 @@ namespace Lumy
         { Level::Fatal, "[FATAL]" }
     };
 
-    void Logger::WriteConsole(Level logLevel, const std::string& message)
+    void Logger::WriteToConsole(Level logLevel, const std::string& message)
     {
         std::cout << s_LevelToColor[logLevel] << message << ConsoleColor::RESET << std::endl;
     }
 
-    void Logger::ConfigFlagFormat(std::ostringstream& outStream, Level logLevel) const
+    void Logger::WriteToFile(const std::string &message)
     {
+        m_LogFile << message << "\n";
+        m_LogFile.flush();
+    }
+
+    void Logger::ApplyFlagFormat(FormatFlag formatFlag, Level logLevel, std::ostringstream& outStream) const
+    {
+        outStream.clear();
         bool configFormatEmpty = true;
 
-        if (m_ConfigFlags & ConfigFlag_Date)
+        if (formatFlag & FormatFlag_Date)
         {
             configFormatEmpty = false;
             outStream << "[";
@@ -69,7 +95,7 @@ namespace Lumy
             outStream << "]";
         }
 
-        if (m_ConfigFlags & ConfigFlag_Time)
+        if (formatFlag & FormatFlag_Time)
         {
             if (!configFormatEmpty)
             {
@@ -81,7 +107,7 @@ namespace Lumy
             outStream << "]";
         }
 
-        if (m_ConfigFlags & ConfigFlag_Level)
+        if (formatFlag & FormatFlag_Level)
         {
             if (!configFormatEmpty)
             {
@@ -91,7 +117,7 @@ namespace Lumy
             outStream << s_LevelToString[logLevel];
         }
 
-        if (m_ConfigFlags & ConfigFlag_Name)
+        if (formatFlag & FormatFlag_Name)
         {
             if (!configFormatEmpty)
             {

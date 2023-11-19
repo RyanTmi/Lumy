@@ -62,7 +62,7 @@ namespace Lumy
     {
         if (!std::filesystem::create_directory("profiles"))
         {
-            LM_CORE_LOG_ERROR("Failed to create profiles directory !");
+            // TODO - Error handling
         }
     }
 

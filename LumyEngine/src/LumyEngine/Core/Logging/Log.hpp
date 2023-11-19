@@ -11,7 +11,7 @@ namespace Lumy
     public:
         static void Init();
 
-        inline static std::shared_ptr<Logger> GetCoreLogger() { return s_CoreLogger; }
+        inline static std::shared_ptr<Logger> GetCoreLogger() { return s_EngineLogger; }
         inline static std::shared_ptr<Logger> GetClientLogger() { return s_ClientLogger; }
     public:
         Log() = delete;
@@ -20,7 +20,7 @@ namespace Lumy
         Log(const Log&) = delete;
         Log& operator=(const Log&) = delete;
     private:
-        static std::shared_ptr<Logger> s_CoreLogger;
+        static std::shared_ptr<Logger> s_EngineLogger;
         static std::shared_ptr<Logger> s_ClientLogger;
     };
 }

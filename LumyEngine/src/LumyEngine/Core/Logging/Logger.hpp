@@ -18,6 +18,7 @@
 #include "LumyEngine/Core/Types.hpp"
 #include "LumyEngine/Core/StringUtils.hpp"
 
+#include <fstream>
 #include <map>
 
 namespace Lumy
@@ -32,23 +33,27 @@ namespace Lumy
             Trace, Debug, Info, Warn, Error, Fatal
         };
 
-        enum ConfigFlag
+        enum FormatFlag
         {
-            ConfigFlag_None  = 0,
-            ConfigFlag_Date  = BIT(0),
-            ConfigFlag_Time  = BIT(1),
-            ConfigFlag_Level = BIT(2),
-            ConfigFlag_Name  = BIT(3),
-            ConfigFlag_All   = ~0
+            FormatFlag_None  = 0,
+            FormatFlag_Date  = BIT(0),
+            FormatFlag_Time  = BIT(1),
+            FormatFlag_Level = BIT(2),
+            FormatFlag_Name  = BIT(3),
+            FormatFlag_All   = ~0
+        };
+
+        struct Config
+        {
+            FormatFlag FormatFlag;
+            bool Enabled;
         };
     public:
-        /**
-         * @brief Constructor for the Logger class.
-         * @param logFormat Configuration flags for log formatting.
-         * @param name The name associated with the logger.
-         * @param logToFile Whether to log messages to a file.
-         */
-        explicit Logger(ConfigFlag logFormat = ConfigFlag_None, const std::string& name = "", bool logToFile = false);
+
+        Logger(const std::string& name, Config consoleConfig);
+        Logger(const std::string& name, Config consoleConfig, Config logFileConfig);
+
+        ~Logger();
 
         /**
          * @brief Log a message with the specified log level.
@@ -60,22 +65,21 @@ namespace Lumy
         template <typename... Args>
         void Log(Level logLevel, std::string_view format, Args... args);
 
-        /**
-         * @brief Enable or disable the logger.
-         * @param enabled True to enable the logger, false to disable.
-         */
-        void SetEnabled(bool enabled) { m_Enabled = enabled; }
+        inline void ConsoleSetEnabled(bool enabled) { m_ConsoleConfig.Enabled = enabled; }
+        inline void LogFileSetEnabled(bool enabled) { m_LogFileConfig.Enabled = enabled; }
     private:
-        static void WriteConsole(Level logLevel, const std::string& message);
-        void ConfigFlagFormat(std::ostringstream& outStream, Level logLevel) const;
+        static void WriteToConsole(Level logLevel, const std::string& message);
+        void WriteToFile(const std::string& message);
+        void ApplyFlagFormat(FormatFlag formatFlag, Level logLevel, std::ostringstream& outStream) const;
 
         static std::map<Level, const char*> s_LevelToColor;
         static std::map<Level, const char*> s_LevelToString;
     private:
         const std::string m_Name;
-        const std::string m_LogFileName;
-        ConfigFlag m_ConfigFlags;
-        bool m_Enabled = true;
+        std::ofstream m_LogFile;
+
+        Config m_ConsoleConfig;
+        Config m_LogFileConfig{};
     };
 }
 

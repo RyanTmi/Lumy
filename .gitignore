@@ -5,6 +5,7 @@
 bin/
 build/
 
+logs/
 profiles/
 
 .DS_Store

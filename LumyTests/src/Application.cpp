@@ -4,8 +4,6 @@ int main()
 {
     Lumy::Log::Init();
 
-
-
     LM_PROFILE_BEGIN_SESSION("Startup", "LumyEngine-Startup");
 
     LM_PROFILE_END_SESSION();
