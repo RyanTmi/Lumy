@@ -1,4 +1,4 @@
-#include <LumyEngine.h>
+#include <LumyEngine.hpp>
 
 int main()
 {

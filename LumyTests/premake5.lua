@@ -9,7 +9,7 @@ project "LumyTests"
 
     files
     {
-        "src/**.h",
+        "src/**.hpp",
         "src/**.cpp"
     }
 

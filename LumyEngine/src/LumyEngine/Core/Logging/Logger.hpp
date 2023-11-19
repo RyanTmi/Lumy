@@ -15,8 +15,8 @@
 
 #pragma once
 
-#include "LumyEngine/Core/Types.h"
-#include "LumyEngine/Core/StringUtils.h"
+#include "LumyEngine/Core/Types.hpp"
+#include "LumyEngine/Core/StringUtils.hpp"
 
 #include <map>
 

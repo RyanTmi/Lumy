@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include "PlatformDetection.h"
+#include "PlatformDetection.hpp"
 
-#include "Types.h"
+#include "Types.hpp"
 
-#include "Logging/Log.h"
-#include "Assert.h"
+#include "Logging/Log.hpp"
+#include "Assert.hpp"

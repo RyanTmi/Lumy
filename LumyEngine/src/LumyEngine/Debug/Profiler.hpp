@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "LumyEngine/Core/Foundation.h"
+#include "LumyEngine/Core/Foundation.hpp"
 
 #include <string>
 #include <fstream>

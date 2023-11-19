@@ -9,7 +9,7 @@ project "LumyEngine"
 
     files
     {
-        "src/**.h",
+        "src/**.hpp",
         "src/**.cpp",
         "src/**.inl"
     }
