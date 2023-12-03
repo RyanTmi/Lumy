@@ -22,8 +22,6 @@ namespace Lumy
         MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll
     };
 
-
-
     class Event
     {
     public:
@@ -36,10 +34,10 @@ namespace Lumy
         {
             return GetName();
         }
-
-        std::ostream& operator<<(std::ostream& os) const
-        {
-            return os << ToString();
-        }
     };
+
+    inline std::ostream& operator<<(std::ostream& os, const Event& e)
+    {
+        return os << e.ToString();
+    }
 }
