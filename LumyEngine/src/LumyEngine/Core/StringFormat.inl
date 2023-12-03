@@ -1,16 +1,19 @@
-namespace Lumy::Utils
+#pragma once
+#include <sstream>
+
+namespace Lumy
 {
     template <typename... Args>
-    void Format(std::ostringstream& outStream, std::string_view format, Args... args)
+    std::string StringFormat::Format(std::string_view format, Args... args)
     {
         static auto format_helper = [](std::ostringstream& oss, std::string_view& str, const auto& value)
         {
-            lm_size openBracket = str.find('{');
+            const std::size_t openBracket = str.find('{');
             if (openBracket == std::string::npos)
             {
                 return;
             }
-            lm_size closeBracket = str.find('}', openBracket + 1);
+            const std::size_t closeBracket = str.find('}', openBracket + 1);
             if (closeBracket == std::string::npos)
             {
                 return;
@@ -19,7 +22,9 @@ namespace Lumy::Utils
             str = str.substr(closeBracket + 1);
         };
 
-        (format_helper(outStream, format, args), ...);
-        outStream << format;
+        std::ostringstream oss;
+        (format_helper(oss, format, args), ...);
+        oss << format;
+        return oss.str();
     }
 }

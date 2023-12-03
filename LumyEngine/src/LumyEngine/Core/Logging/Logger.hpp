@@ -1,5 +1,5 @@
 /**
- * @file Logger.h
+ * @file Logger.hpp
  * @author Ryan Timeus
  * @brief Logging utility for Lumy Game Engine.
  * 
@@ -11,12 +11,12 @@
  * 
  * @copyright Lumy Game Engine is Copyright (c) Ryan Timeus 2023-2024
  * 
- */ 
+ */
 
 #pragma once
 
 #include "LumyEngine/Core/Types.hpp"
-#include "LumyEngine/Core/StringUtils.hpp"
+#include "LumyEngine/Core/StringFormat.hpp"
 
 #include <fstream>
 #include <map>
@@ -24,7 +24,6 @@
 namespace Lumy
 {
     // TODO - Make this class thread safe
-    // TODO - Add a log file support
     class Logger
     {
     public:
@@ -49,7 +48,6 @@ namespace Lumy
             bool Enabled;
         };
     public:
-
         Logger(const std::string& name, Config consoleConfig);
         Logger(const std::string& name, Config consoleConfig, Config logFileConfig);
 
@@ -65,8 +63,8 @@ namespace Lumy
         template <typename... Args>
         void Log(Level logLevel, std::string_view format, Args... args);
 
-        inline void ConsoleSetEnabled(bool enabled) { m_ConsoleConfig.Enabled = enabled; }
-        inline void LogFileSetEnabled(bool enabled) { m_LogFileConfig.Enabled = enabled; }
+        void ConsoleSetEnabled(const bool enabled) { m_ConsoleConfig.Enabled = enabled; }
+        void LogFileSetEnabled(const bool enabled) { m_LogFileConfig.Enabled = enabled; }
     private:
         static void WriteToConsole(Level logLevel, const std::string& message);
         void WriteToFile(const std::string& message);
@@ -79,7 +77,7 @@ namespace Lumy
         std::ofstream m_LogFile;
 
         Config m_ConsoleConfig;
-        Config m_LogFileConfig{};
+        Config m_LogFileConfig;
     };
 }
 

@@ -1,5 +1,5 @@
 /**
- * @file Types.h
+ * @file Types.hpp
  * @author Ryan Timeus (timeusryan@gmail.com)
  * @brief Definition of fundamental types for the game engine.
  * @version 0.1
@@ -11,75 +11,55 @@
 
 #pragma once
 
-/**
- * @brief Alias for unsigned integer types.
- */
-using lm_u8   = unsigned char;
-using lm_u16  = unsigned short;
-using lm_u32  = unsigned int;
-using lm_u64  = unsigned long;
+namespace Lumy
+{
+    /**
+     * @brief Alias for unsigned integer types.
+     */
+    using u8  = unsigned char;
+    using u16 = unsigned short;
+    using u32 = unsigned int;
+    using u64 = unsigned long;
 
-/**
- * @brief Alias for signed integer types.
- */
-using lm_i8   = char;
-using lm_i16  = short;
-using lm_i32  = int;
-using lm_i64  = long;
+    /**
+     * @brief Alias for signed integer types.
+     */
+    using i8  = char;
+    using i16 = short;
+    using i32 = int;
+    using i64 = long;
 
+    /**
+     * @brief Alias for floating-point types.
+     */
+    using f32 = float;
+    using f64 = double;
 
-/**
- * @brief Alias for floating-point types.
- */
-using lm_f32  = float;
-using lm_f64  = double;
+    /**
+     * @brief Alias for boolean types.
+     */
+    using b8 = bool;
 
-/**
- * @brief Alias for size types.
- */
-using lm_size  = lm_u64;
-using lm_ssize = lm_i64;
+    /**
+     * @brief Static assertions to check the size of types.
+     */
+    static_assert(sizeof(u8 ) == 1, "Expected u8 to be 1 byte.");
+    static_assert(sizeof(u16) == 2, "Expected u16 to be 2 byte.");
+    static_assert(sizeof(u32) == 4, "Expected u32 to be 4 byte.");
+    static_assert(sizeof(u64) == 8, "Expected u64 to be 8 byte.");
 
-/**
- * @brief Macro for performing a static assertion.
- */
-#define STATIC_ASSERT static_assert
+    static_assert(sizeof(i8 ) == 1, "Expected i8 to be 1 byte.");
+    static_assert(sizeof(i16) == 2, "Expected i16 to be 2 byte.");
+    static_assert(sizeof(i32) == 4, "Expected i32 to be 4 byte.");
+    static_assert(sizeof(i64) == 8, "Expected i64 to be 8 byte.");
 
-/**
- * @brief Static assertions to check the size of types.
- */
-STATIC_ASSERT(sizeof(lm_u8) == 1, "Expected lm_u8 to be 1 byte.");
-STATIC_ASSERT(sizeof(lm_u16) == 2, "Expected lm_u16 to be 2 byte.");
-STATIC_ASSERT(sizeof(lm_u32) == 4, "Expected lm_u32 to be 4 byte.");
-STATIC_ASSERT(sizeof(lm_u64) == 8, "Expected lm_u64 to be 8 byte.");
+    static_assert(sizeof(f32) == 4, "Expected f32 to be 4 byte.");
+    static_assert(sizeof(f64) == 8, "Expected f64 to be 8 byte.");
 
-STATIC_ASSERT(sizeof(lm_i8) == 1, "Expected lm_i8 to be 1 byte.");
-STATIC_ASSERT(sizeof(lm_i16) == 2, "Expected lm_i16 to be 2 byte.");
-STATIC_ASSERT(sizeof(lm_i32) == 4, "Expected lm_i32 to be 4 byte.");
-STATIC_ASSERT(sizeof(lm_i64) == 8, "Expected lm_i64 to be 8 byte.");
+    static_assert(sizeof(b8 ) == 1, "Expected b8 to be 1 byte.");
 
-STATIC_ASSERT(sizeof(lm_f32) == 4, "Expected lm_f32 to be 4 byte.");
-STATIC_ASSERT(sizeof(lm_f64) == 8, "Expected lm_f64 to be 8 byte.");
-
-/**
- * @brief Macro to define bits.
- */
-#define BIT(x) (1ULL << x)
-
-/**
- * @brief Constants for the maximum and minimum values of integer types.
- */
-#define LM_U8_MAX    ((1U << (sizeof(lm_u8) * 8)) - 1)
-#define LM_U16_MAX   ((1U << (sizeof(lm_u16) * 8)) - 1)
-#define LM_U32_MAX   ((1U << (sizeof(lm_u32) * 8)) - 1)
-#define LM_U64_MAX   ((1ULL << (sizeof(lm_u64) * 8)) - 1)
-
-#define LM_I8_MIN    (-(1 << ((sizeof(lm_i8) * 8) - 1)))
-#define LM_I16_MIN   (-(1 << ((sizeof(lm_i16) * 8) - 1)))
-#define LM_I32_MIN   (-(1U << ((sizeof(lm_i32) * 8) - 1)))
-#define LM_I64_MIN   (-(1ULL << ((sizeof(lm_i64) * 8) - 1)))
-
-#define LM_I8_MAX    ((1 << ((sizeof(lm_i8) * 8) - 1)) - 1)
-#define LM_I16_MAX   ((1 << ((sizeof(lm_i16) * 8) - 1)) - 1)
-#define LM_I32_MAX   ((1U << ((sizeof(lm_i32) * 8) - 1)) - 1)
-#define LM_I64_MAX   ((1ULL << ((sizeof(lm_i64) * 8) - 1)) - 1)
+    /**
+     * @brief Macro to define bits.
+     */
+    #define BIT(x) (1UL << (x))
+}

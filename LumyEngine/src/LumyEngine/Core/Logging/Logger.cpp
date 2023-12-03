@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+// TODO - Make this work on windows
 namespace Lumy::ConsoleColor
 {
     constexpr char RESET     [] = "\033[0m";
@@ -71,7 +72,7 @@ namespace Lumy
         { Level::Fatal, "[FATAL]" }
     };
 
-    void Logger::WriteToConsole(Level logLevel, const std::string& message)
+    void Logger::WriteToConsole(const Level logLevel, const std::string& message)
     {
         std::cout << s_LevelToColor[logLevel] << message << ConsoleColor::RESET << std::endl;
     }
@@ -82,17 +83,14 @@ namespace Lumy
         m_LogFile.flush();
     }
 
-    void Logger::ApplyFlagFormat(FormatFlag formatFlag, Level logLevel, std::ostringstream& outStream) const
+    void Logger::ApplyFlagFormat(const FormatFlag formatFlag, const Level logLevel, std::ostringstream& outStream) const
     {
-        outStream.clear();
         bool configFormatEmpty = true;
 
         if (formatFlag & FormatFlag_Date)
         {
             configFormatEmpty = false;
-            outStream << "[";
-            Utils::GetCurrentDate(outStream);
-            outStream << "]";
+            outStream << "[" << StringFormat::CurrentDate() << "]";
         }
 
         if (formatFlag & FormatFlag_Time)
@@ -102,9 +100,7 @@ namespace Lumy
                 outStream << "-";
             }
             configFormatEmpty = false;
-            outStream << "[";
-            Utils::GetCurrentTime(outStream);
-            outStream << "]";
+            outStream << "[" << StringFormat::CurrentTime() << "]";
         }
 
         if (formatFlag & FormatFlag_Level)

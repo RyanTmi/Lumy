@@ -1,13 +1,16 @@
 .idea/
 .vscode/
-.clion_cmake-build
+
+.clion_cmake-build/
+.vscode_cmake-build/
 
 bin/
+obj/
 build/
 
 logs/
 profiles/
 
-.DS_Store
+**/.DS_Store
 **/CMakeLists.txt
 *.cmake

@@ -1,23 +1,25 @@
+#pragma once
+
 namespace Lumy
 {
-    Profiler& Profiler::Instance()
+    inline Profiler& Profiler::Instance()
     {
         static Profiler instance;
         return instance;
     }
 
-    void Profiler::BeginSession(const std::string& name, const std::string& fileName)
+    inline void Profiler::BeginSession(const std::string& name, const std::string& fileName)
     {
         if (m_SessionInProgress)
         {
-            LM_CORE_LOG_ERROR("There is already a profile session : {} !", m_CurrentSession->Name);
+            Log::Error("There is already a profile session : {} !", m_CurrentSession->Name);
             return;
         }
 
         m_OutputFile = std::ofstream("profiles/" + fileName + ".json");
         if (!m_OutputFile.is_open())
         {
-            LM_CORE_LOG_ERROR("Cannot open file {}", fileName);
+            Log::Error("Cannot open file {}", fileName);
             return;
         }
 
@@ -28,7 +30,7 @@ namespace Lumy
         m_SessionInProgress = true;
     }
 
-    void Profiler::EndSession()
+    inline void Profiler::EndSession()
     {
         m_OutputFile << "{}]}";
         m_OutputFile.flush();
@@ -39,7 +41,7 @@ namespace Lumy
         m_SessionInProgress = false;
     }
 
-    void Profiler::WriteProfile(const ProfileResult& result)
+    inline void Profiler::WriteProfile(const ProfileResult& result)
     {
         std::stringstream ss;
 
@@ -57,7 +59,7 @@ namespace Lumy
         m_OutputFile.flush();
     }
 
-    Profiler::Profiler()
+    inline Profiler::Profiler()
         : m_CurrentSession(nullptr), m_SessionInProgress(false)
     {
         if (!std::filesystem::create_directory("profiles"))
@@ -66,24 +68,24 @@ namespace Lumy
         }
     }
 
-    Profiler::~Profiler()
+    inline Profiler::~Profiler()
     {
         EndSession();
     }
 
-    ProfileTimer::ProfileTimer(const char* name)
+    inline ProfileTimer::ProfileTimer(const char* name)
         : m_Name(name), m_StartTime(std::chrono::high_resolution_clock::now())
     {
     }
 
-    ProfileTimer::~ProfileTimer()
+    inline ProfileTimer::~ProfileTimer()
     {
-        auto endTime = std::chrono::high_resolution_clock::now();
+        const auto endTime = std::chrono::high_resolution_clock::now();
 
-        lm_u64 start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count();
-        lm_u64 end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
+        const u64 start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count();
+        const u64 end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
 
-        lm_u64 threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+        const u64 threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
 
         Profiler::Instance().WriteProfile({ m_Name, start, end, threadID });
     }

@@ -1,5 +1,5 @@
 /**
- * @file Assert.h
+ * @file Assert.hpp
  * @author Ryan Timeus (timeusryan@gmail.com)
  * @brief Assertion macros for the game engine.
  * 
@@ -35,22 +35,15 @@
     #define LM_DEBUGBREAK()
 #endif
 
-/**
- * @def LM_CORE_ASSERT
- * @brief Core assertion macro for runtime checks.
- * @details Checks the specified condition and triggers a debug break on failure
- * if assertions are enabled. Logs an error message with file and line information.
- * @param cond The condition to check.
- */
 #if defined(LM_ASSERTS_ENABLED)
-    #define LM_CORE_ASSERT(cond)            \
+    #define LM_ENGINE_ASSERT(cond)          \
         {                                   \
             if (cond) {                     \
             } else {                        \
-                LM_CORE_LOG_ERROR("Assertion failed : '{}' in {} at line {}", #cond, __FILE__, __LINE__);   \
+                Lumy::Log::Error("Assertion failed : '{}' in {} at line {}", #cond, __FILE__, __LINE__);   \
                 LM_DEBUGBREAK();            \
             }                               \
         }
 #else
-    #define LM_CORE_ASSERT(cond)
+    #define LM_ENGINE_ASSERT(cond)
 #endif

@@ -5,7 +5,7 @@ namespace Lumy
     std::shared_ptr<Logger> Log::s_EngineLogger;
     std::shared_ptr<Logger> Log::s_ClientLogger;
 
-    void Log::Init()
+    void Log::Initialize()
     {
         Logger::Config consoleConfig
         {
@@ -14,13 +14,13 @@ namespace Lumy
         };
         Logger::Config logFileConfig
         {
-            static_cast<Logger::FormatFlag>(Logger::FormatFlag_Time | Logger::FormatFlag_Level | Logger::FormatFlag_Name),
+            static_cast<Logger::FormatFlag>(Logger::FormatFlag_Time | Logger::FormatFlag_Level),
             true
         };
 
-        Log::s_EngineLogger = std::make_shared<Logger>("Lumy", consoleConfig, logFileConfig);
-        Log::s_ClientLogger = std::make_shared<Logger>("Client", consoleConfig);
+        s_EngineLogger = std::make_shared<Logger>("Lumy", consoleConfig, logFileConfig);
+        s_ClientLogger = std::make_shared<Logger>("Client", consoleConfig);
 
-        LM_CORE_LOG_INFO("Log initialized !");
+        Info("Log initialized !");
     }
 }

@@ -1,5 +1,5 @@
 /**
- * @file Profiler.h
+ * @file Profiler.hpp
  * @author Ryan Timeus (timeusryan@gmail.com)
  * @brief Profiling utility for Lumy Game Engine using Chrome Tracing.
  * 
@@ -32,11 +32,11 @@ namespace Lumy
         /** @brief Name of the profile event. */
         std::string Name;
         /** @brief Start time of the profile event. */
-        lm_u64 Start;
+        u64 Start;
         /** @brief End time of the profile event. */
-        lm_u64 End;
+        u64 End;
         /** @brief Thread ID of the profile event. */
-        lm_u64 ThreadID;
+        u64 ThreadID;
     };
 
     /**

@@ -1,5 +1,5 @@
 /**
- * @file Foundation.h
+ * @file Foundation.hpp
  * @author Ryan Timeus (timeusryan@gmail.com)
  * @brief Core foundation header for the game engine.
  *

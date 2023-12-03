@@ -1,5 +1,5 @@
 /**
- * @file PlatformDetection.h
+ * @file PlatformDetection.hpp
  * @author Ryan Timeus (timeusryan@gmail.com)
  * @brief Platform detection macros for the game engine.
  * 
