@@ -22,3 +22,5 @@
 
 #include "Logging/Log.hpp"
 #include "Assert.hpp"
+
+#include "LumyEngine/Debug/Profiler.hpp"

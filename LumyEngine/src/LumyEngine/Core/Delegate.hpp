@@ -78,7 +78,7 @@ namespace Lumy
          * @param target A FunctionBindTarget representing the binding target.
          */
         template <auto Function, typename = std::enable_if_t<std::is_invocable_r_v<ReturnType, decltype(Function), Args...>>>
-        constexpr explicit Delegate(FunctionBindTarget<Function> target) noexcept;
+        constexpr Delegate(FunctionBindTarget<Function> target) noexcept;
 
         /**
          * @brief Constructor to create a delegate from a const member function.
@@ -87,7 +87,7 @@ namespace Lumy
          * @param target A MemberFunctionBindTarget representing the binding target.
          */
         template <auto MemberFunction, typename C, typename = std::enable_if_t<std::is_invocable_r_v<ReturnType, decltype(MemberFunction), const C&, Args...>>>
-        constexpr explicit Delegate(MemberFunctionBindTarget<MemberFunction, const C> target) noexcept;
+        constexpr Delegate(MemberFunctionBindTarget<MemberFunction, const C> target) noexcept;
 
         /**
          * @brief Constructor to create a delegate from a non-const member function.
@@ -96,7 +96,7 @@ namespace Lumy
          * @param target A MemberFunctionBindTarget representing the binding target.
          */
         template <auto MemberFunction, typename C, typename = std::enable_if_t<std::is_invocable_r_v<ReturnType, decltype(MemberFunction), C&, Args...>>>
-        constexpr explicit Delegate(MemberFunctionBindTarget<MemberFunction, C> target) noexcept;
+        constexpr Delegate(MemberFunctionBindTarget<MemberFunction, C> target) noexcept;
 
         /**
          * @brief Copy constructor.

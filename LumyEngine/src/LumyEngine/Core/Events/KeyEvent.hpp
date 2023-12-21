@@ -4,46 +4,31 @@
 
 namespace Lumy
 {
-    class KeyEvent : public Event
+    struct KeyEvent : public Event
     {
-    public:
-        u16 GetKeyCode() const { return m_KeyCode; }
+        const UInt16 KeyCode;
+
     protected:
-        explicit KeyEvent(const u16 keycode)
-            : m_KeyCode(keycode) {}
-
-        const u16 m_KeyCode; // TODO : Change to KeyCode type
+        explicit KeyEvent(UInt16 keycode);
     };
 
-    class KeyPressedEvent final : public KeyEvent
+    struct KeyPressedEvent final : public KeyEvent
     {
-    public:
-        explicit KeyPressedEvent(const u16 keycode)
-            : KeyEvent(keycode) {}
+        explicit KeyPressedEvent(UInt16 keycode);
 
-        EventType GetEventType() const override { return EventType::KeyPress; }
-        const char* GetName() const override { return "KeyPressEvent"; }
-        std::string ToString() const override
-        {
-            std::ostringstream oss;
-            oss << "KeyPressEvent : " << m_KeyCode;
-            return oss.str();
-        }
+        EventType Type() const override;
+        const char* Name() const override;
+        std::string ToString() const override;
     };
 
-    class KeyReleasedEvent final : public KeyEvent
+    struct KeyReleasedEvent final : public KeyEvent
     {
-    public:
-        explicit KeyReleasedEvent(const u16 keycode)
-            : KeyEvent(keycode) {}
+        explicit KeyReleasedEvent(UInt16 keycode);
 
-        EventType GetEventType() const override { return EventType::KeyRelease; }
-        const char* GetName() const override { return "KeyReleasedEvent"; }
-        std::string ToString() const override
-        {
-            std::ostringstream oss;
-            oss << "KeyReleasedEvent : " << m_KeyCode;
-            return oss.str();
-        }
+        EventType Type() const override;
+        const char* Name() const override;
+        std::string ToString() const override;
     };
 }
+
+#include "KeyEvent.inl"

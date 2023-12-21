@@ -4,34 +4,25 @@
 
 namespace Lumy
 {
-    class WindowResizeEvent final : public Event
+    struct WindowResizeEvent final : public Event
     {
-    public:
-        WindowResizeEvent(const u16 width, const u16 height)
-            : m_Width(width), m_Height(height) {}
+        WindowResizeEvent(UInt16 width, UInt16 height);
 
-        u16 GetWidth() const { return m_Width; }
-        u16 GetHeight() const { return m_Height; }
+        EventType Type() const override;
+        const char* Name() const override;
+        std::string ToString() const override;
 
-        EventType GetEventType() const override { return EventType::WindowResize; }
-        const char* GetName() const override { return "WindowResizeEvent"; }
-        std::string ToString() const override
-        {
-            std::ostringstream oss;
-            oss << "WindowResizeEvent : " << m_Width << ", " << m_Height;
-            return oss.str();
-        }
-    private:
-        const u16 m_Width;
-        const u16 m_Height;
+        const UInt16 Width;
+        const UInt16 Height;
     };
 
-    class WindowCloseEvent final : public Event
+    struct WindowCloseEvent final : public Event
     {
-    public:
         WindowCloseEvent() = default;
 
-        EventType GetEventType() const override { return EventType::WindowClose; }
-        const char* GetName() const override { return "WindowCloseEvent"; }
+        EventType Type() const override;
+        const char* Name() const override;
     };
 }
+
+#include "WindowEvent.inl"

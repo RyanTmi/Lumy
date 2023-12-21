@@ -12,25 +12,16 @@ namespace Lumy
         return instance;
     }
 
-    void EventManager::InvokeEvent(const Event& event)
+    void EventManager::PublishEvents()
     {
-        for (const auto& listener : m_Subscribers[event.GetEventType()])
+        while (const auto& event = Instance().m_EventQueue.DequeueEvent())
         {
-            listener->DispatchEvent(event);
+            Instance().m_EventDispatcher.Dispatch(*event);
         }
     }
 
-    std::unordered_map<std::type_index, EventType> const EventManager::s_EventClassMap =
+    void EventManager::SendEvent(const Event& event)
     {
-        { typeid(WindowCloseEvent), EventType::WindowClose },
-        { typeid(WindowResizeEvent), EventType::WindowResize },
-
-        { typeid(KeyPressedEvent), EventType::KeyPress },
-        { typeid(KeyReleasedEvent), EventType::KeyRelease },
-
-        { typeid(MouseButtonPressedEvent),  EventType::MouseButtonPress },
-        { typeid(MousebuttonReleasedEvent), EventType::MouseButtonRelease },
-        { typeid(MouseScrolledEvent),  EventType::MouseScroll },
-        { typeid(MouseMovedEvent),  EventType::MouseMove }
-    };
+        Instance().m_EventDispatcher.Dispatch(event);
+    }
 }

@@ -10,7 +10,7 @@ namespace Lumy
     {
     public:
         virtual ~EventListener() = default;
-        virtual void DispatchEvent(const Event&) const = 0;
+        virtual void Invoke(const Event&) const = 0;
         virtual bool operator==(const EventListener &) const noexcept = 0;
         virtual std::size_t GetHashCode() const = 0;
     };
@@ -24,7 +24,7 @@ namespace Lumy
         explicit EventClassListener(EventCallback callback)
             : m_Callback(callback) {}
 
-        void DispatchEvent(const Event& event) const override
+        void Invoke(const Event& event) const override
         {
             m_Callback(static_cast<const EventClass&>(event));
         }

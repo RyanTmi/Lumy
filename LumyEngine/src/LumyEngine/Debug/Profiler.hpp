@@ -32,11 +32,11 @@ namespace Lumy
         /** @brief Name of the profile event. */
         std::string Name;
         /** @brief Start time of the profile event. */
-        u64 Start;
+        UInt64 Start;
         /** @brief End time of the profile event. */
-        u64 End;
+        UInt64 End;
         /** @brief Thread ID of the profile event. */
-        u64 ThreadID;
+        UInt64 ThreadID;
     };
 
     /**

@@ -43,7 +43,7 @@ namespace Lumy
 
     inline void Profiler::WriteProfile(const ProfileResult& result)
     {
-        std::stringstream ss;
+        std::ostringstream ss;
 
         ss << "{";
         ss << R"("cat":"function",)";
@@ -82,10 +82,10 @@ namespace Lumy
     {
         const auto endTime = std::chrono::high_resolution_clock::now();
 
-        const u64 start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count();
-        const u64 end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
+        const UInt64 start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count();
+        const UInt64 end = std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count();
 
-        const u64 threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+        const UInt64 threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
 
         Profiler::Instance().WriteProfile({ m_Name, start, end, threadID });
     }

@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+.cache/
 
 .clion_cmake-build/
 .vscode_cmake-build/
@@ -14,3 +15,6 @@ profiles/
 **/.DS_Store
 **/CMakeLists.txt
 *.cmake
+
+*.xcodeproj/
+*.xcworkspace/

@@ -7,36 +7,49 @@ project "LumyTests"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
 
-    files
-    {
+    files {
         "src/**.hpp",
         "src/**.cpp"
     }
 
-    includedirs
-    {
+    includedirs {
         "%{wks.location}/LumyEngine/src",
+        "%{wks.location}/LumyEngine/vendor/metal/metal-cpp",
+        "%{wks.location}/LumyEngine/vendor/metal/metal-cpp-extension",
     }
 
-    links
-    {
+    links {
         "LumyEngine"
     }
 
-    filter "system:macosx"
+    filter { "system:macosx" }
         systemversion "14.0"
 
-    filter "configurations:Debug"
-        defines "LM_DEBUG"
+        links {
+            "Metal.framework",
+            "MetalKit.framework",
+            "AppKit.framework",
+            "Foundation.framework",
+            "QuartzCore.framework"
+        }
+
+        xcodebuildsettings {
+            ["USE_HEADERMAP"] = "NO",
+            ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
+        }
+    filter {}
+
+    filter { "configurations:Debug" }
         runtime "Debug"
         symbols "on"
+    filter {}
 
-    filter "configurations:Release"
-        defines "LM_RELEASE"
+    filter { "configurations:Release" }
         runtime "Release"
         optimize "on"
+    filter {}
 
-    filter "configurations:Dist"
-        defines "LM_DIST"
+    filter { "configurations:Dist" }
         runtime "Release"
         optimize "on"
+    filter {}

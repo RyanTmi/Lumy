@@ -7,32 +7,63 @@ project "LumyEngine"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
 
-    files
-    {
-        "src/**.hpp",
-        "src/**.cpp",
-        "src/**.inl"
+    filter { "action:vs*" }
+        pchheader "lmpch.hpp"
+        pchsource "src/lmpch.cpp"
+    filter {}
+
+    filter { "action:xcode4" }
+        pchheader "src/lmpch.hpp"
+    filter {}
+
+    filter { "action:cmake" }
+        pchheader "Lumy/LumyEngine/src/lmpch.hpp"
+    filter {}
+
+    files {
+        "src/**.hpp", "src/**.inl",
+        "src/**.cpp", "src/**.mm" ,
     }
 
-    includedirs
-    {
+    includedirs {
         "src",
+        "vendor/metal/metal-cpp",
+        "vendor/metal/metal-cpp-extension",
     }
 
-    filter "system:macosx"
+    filter { "system:macosx" }
         systemversion "14.0"
 
-    filter "configurations:Debug"
+        links {
+            "Metal.framework",
+            "MetalKit.framework",
+            "AppKit.framework",
+            "Foundation.framework",
+            "QuartzCore.framework",
+
+            "MetalCpp"
+        }
+
+        xcodebuildsettings {
+            ["USE_HEADERMAP"] = "NO",
+            ["ALWAYS_SEARCH_USER_PATHS"] = "YES"
+        }
+    filter {}
+
+    filter { "configurations:Debug" }
         defines "LM_DEBUG"
         runtime "Debug"
         symbols "on"
+    filter {}
 
-    filter "configurations:Release"
+    filter { "configurations:Release" }
         defines "LM_RELEASE"
         runtime "Release"
         optimize "on"
+    filter {}
 
-    filter "configurations:Dist"
+    filter { "configurations:Dist" }
         defines "LM_DIST"
         runtime "Release"
         optimize "on"
+    filter {}

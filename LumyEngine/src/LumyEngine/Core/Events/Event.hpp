@@ -22,17 +22,17 @@ namespace Lumy
         MouseButtonPress, MouseButtonRelease, MouseMove, MouseScroll
     };
 
-    class Event
+    struct Event
     {
     public:
         virtual ~Event() = default;
 
-        virtual EventType GetEventType() const = 0;
-        virtual const char* GetName() const = 0;
+        virtual EventType Type() const = 0;
+        virtual const char* Name() const = 0;
 
         virtual std::string ToString() const
         {
-            return GetName();
+            return Name();
         }
     };
 
