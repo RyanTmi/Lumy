@@ -1,5 +1,5 @@
 workspace "Lumy"
-    architecture "universal"
+    architecture "ARM64"
     startproject "LumyEngine"
 
     configurations { "Debug", "Release", "Dist" }
@@ -7,10 +7,14 @@ workspace "Lumy"
 require "vendor/premake-cmake/cmake"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+group "Dependencies"
+    include "LumyEngine/vendor/metal"
+group ""
+
 group "Core"
     include "LumyEngine"
 group ""
 
-group "Misc"
+group "Tests"
     include "LumyTests"
 group ""
