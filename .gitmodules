@@ -1,0 +1,3 @@
+[submodule "vendor/premake-cmake"]
+	path = vendor/premake-cmake
+	url = https://github.com/RyanTmi/premake-cmake

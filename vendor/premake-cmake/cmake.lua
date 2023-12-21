@@ -23,7 +23,7 @@ local project = p.project
 function cmake.generateWorkspace(wks)
     p.eol("\r\n")
     p.indent("  ")
-
+    
     p.generate(wks, "CMakeLists.txt", cmake.workspace.generate)
 end
 
