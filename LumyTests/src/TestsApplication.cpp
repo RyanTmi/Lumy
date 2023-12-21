@@ -1,10 +1,18 @@
 #include <LumyEngine.hpp>
 
-int main()
+class TestsApp : public Lumy::Application
 {
-    Lumy::Log::Initialize();
+public:
+    TestsApp()
+    {
+    }
+    
+    ~TestsApp()
+    {
+    }
+};
 
-    Lumy::LogInfo("TestsApplication {}", "!");
-
-    return 0;
+Lumy::Application* Lumy::CreateApplication()
+{
+    return new TestsApp();
 }
