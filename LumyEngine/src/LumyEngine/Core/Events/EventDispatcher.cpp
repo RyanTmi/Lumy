@@ -21,7 +21,7 @@ namespace Lumy
         }
     }
 
-    std::unordered_map<std::type_index, EventType> const EventDispatcher::s_EventClassMap =
+    UnorderedMap<std::type_index, EventType> const EventDispatcher::s_EventClassMap =
     {
         { typeid(WindowCloseEvent), EventType::WindowClose },
         { typeid(WindowResizeEvent), EventType::WindowResize },

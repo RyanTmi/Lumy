@@ -23,14 +23,14 @@ namespace Lumy
     class Window
     {
     public:
-        static Window* Create(const WindowProperties& properties);
-    public:
         virtual ~Window() = default;
 
         virtual void Update() = 0;
 
         virtual UInt16 GetWidth() const = 0;
         virtual UInt16 GetHeight() const = 0;
+
+        virtual void* GetNativeWindow() const = 0;
     protected:
         Window() = default;
     };

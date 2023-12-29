@@ -4,6 +4,9 @@
 
 namespace Lumy
 {
+
+#pragma region MouseButtonEvent
+
     struct MouseButtonEvent : public Event
     {
         const UInt16 Button;
@@ -12,6 +15,10 @@ namespace Lumy
     protected:
         explicit MouseButtonEvent(UInt16 button);
     };
+
+#pragma endregion MouseButtonEvent
+
+#pragma region MouseButtonPressedEvent
 
     struct MouseButtonPressedEvent final : public MouseButtonEvent
     {
@@ -22,6 +29,10 @@ namespace Lumy
         std::string ToString() const override;
     };
 
+#pragma endregion MouseButtonPressedEvent
+
+#pragma region MouseButtonReleasedEvent
+
     struct MouseButtonReleasedEvent final : public MouseButtonEvent
     {
         explicit MouseButtonReleasedEvent(UInt16 button);
@@ -30,6 +41,10 @@ namespace Lumy
         const char* Name() const override;
         std::string ToString() const override;
     };
+
+#pragma endregion MouseButtonReleasedEvent
+
+#pragma region MouseMovedEvent
 
     struct MouseMovedEvent final : public Event
     {
@@ -43,6 +58,10 @@ namespace Lumy
         const Float32 MouseY;
     };
 
+#pragma endregion MouseMovedEvent
+
+#pragma region MouseScrolledEvent
+
     struct MouseScrolledEvent final : public Event
     {
         MouseScrolledEvent(Float32 xOffset, Float32 yOffset);
@@ -54,6 +73,9 @@ namespace Lumy
         const Float32 XOffset;
         const Float32 YOffset;
     };
+
+#pragma endregion MouseScrolledEvent
+
 }
 
 #include "MouseEvent.inl"

@@ -1,29 +1,44 @@
 #pragma once
 
 #include "Foundation.hpp"
-
-#include "Events/EventManager.hpp"
-#include "Events/WindowEvent.hpp"
-
-#include "Window.hpp"
+#include "Engine.hpp"
 
 namespace Lumy
 {
-    class Application
+    struct LUMY_API ApplicationConfiguration
+    {
+        ApplicationConfiguration();
+        ApplicationConfiguration(const char* applicationName, UInt16 width, UInt16 height);
+
+        const char* ApplicationName;
+
+        // TODO: Change to a Rectangle struct
+        UInt16 WindowX;
+        UInt16 WindowY;
+        UInt16 WindowWidth;
+        UInt16 WindowHeight;
+        
+        Bool8 CenterWindow;
+    };
+
+    class LUMY_API Application
     {
     public:
         Application();
-        virtual ~Application();
-        
+        virtual ~Application() = default;
     public:
-        void Run();
-    private:
-        void OnWindowResize(const WindowResizeEvent& e);
-        void OnWindowClose(const WindowCloseEvent& e);
-    private:
-        Bool8 m_Running;
-        std::unique_ptr<Window> m_Window;
+        virtual void Initialize() = 0;
+        virtual void Update() = 0;
+        virtual void Shutdown() = 0;
+    public:
+        ApplicationConfiguration& GetConfiguration();
+        void SetEngine(Engine* engine);
+    protected:
+        ApplicationConfiguration m_ApplicationConfiguration;
+        Engine* m_Engine;
     };
 
-    Application* CreateApplication();
+    extern Application* ApplicationCreate();
 }
+
+#include "Application.inl"

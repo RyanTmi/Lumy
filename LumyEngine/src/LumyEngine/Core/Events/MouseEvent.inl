@@ -2,11 +2,17 @@
 
 namespace Lumy
 {
+
+#pragma region MouseButtonEvent
+
     inline MouseButtonEvent::MouseButtonEvent(UInt16 button)
         : Button(button)
     {
     }
 
+#pragma endregion MouseButtonEvent
+
+#pragma region MouseButtonPressedEvent
 
     inline MouseButtonPressedEvent::MouseButtonPressedEvent(UInt16 button)
         : MouseButtonEvent(button)
@@ -30,6 +36,9 @@ namespace Lumy
         return oss.str();
     }
 
+#pragma endregion MouseButtonPressedEvent
+
+#pragma region MouseButtonReleasedEvent
 
     inline MouseButtonReleasedEvent::MouseButtonReleasedEvent(UInt16 button)
         : MouseButtonEvent(button) {}
@@ -51,6 +60,9 @@ namespace Lumy
         return oss.str();
     }
 
+#pragma endregion MouseButtonReleasedEvent
+
+#pragma region MouseMovedEvent
 
     inline MouseMovedEvent::MouseMovedEvent(Float32 mouseX, Float32 mouseY)
         : MouseX(mouseX), MouseY(mouseY)
@@ -74,6 +86,9 @@ namespace Lumy
         return oss.str();
     }
 
+#pragma endregion MouseMovedEvent
+
+#pragma region MouseScrolledEvent
 
     inline MouseScrolledEvent::MouseScrolledEvent(Float32 xOffset, Float32 yOffset)
         : XOffset(xOffset), YOffset(yOffset)
@@ -96,4 +111,7 @@ namespace Lumy
         oss << "MouseScrolledEvent : " << XOffset << ", " << YOffset;
         return oss.str();
     }
+
+#pragma endregion MouseScrolledEvent
+
 }

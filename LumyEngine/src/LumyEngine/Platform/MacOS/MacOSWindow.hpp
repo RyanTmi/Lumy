@@ -13,10 +13,9 @@
 // Instead, these resize events are sent directly, causing all associated event listeners to be executed in sequence,
 // during the Update function, potentially resulting in a temporary blockage of the application run loop.
 
+
 namespace Lumy
 {
-    struct WindowHandle;
-
     class MacOSWindow : public Window
     {
     public:
@@ -27,7 +26,9 @@ namespace Lumy
         UInt16 GetHeight() const override;
 
         void Update() override;
+        void* GetNativeWindow() const override;
     private:
-        std::unique_ptr<WindowHandle> m_WindowHandle;
+        struct WindowHandle;
+        UniquePtr<WindowHandle> m_WindowHandle;
     };
 }

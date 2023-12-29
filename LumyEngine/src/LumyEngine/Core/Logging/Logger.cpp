@@ -52,7 +52,7 @@ namespace Lumy
         }
     }
 
-    std::map<Logger::Level, const char*> Logger::s_LevelToColor
+    UnorderedMap<Logger::Level, const char*> Logger::s_LevelToColor
     {
         { Level::Trace, ConsoleColor::BG_WHITE  },
         { Level::Debug, ConsoleColor::BG_BLUE   },
@@ -62,7 +62,7 @@ namespace Lumy
         { Level::Fatal, ConsoleColor::FG_RED    }
     };
 
-    std::map<Logger::Level, const char*> Logger::s_LevelToString
+    UnorderedMap<Logger::Level, const char*> Logger::s_LevelToString
     {
         { Level::Trace, "[TRACE]" },
         { Level::Debug, "[DEBUG]" },

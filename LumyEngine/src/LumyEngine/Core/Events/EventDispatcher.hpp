@@ -20,9 +20,9 @@ namespace Lumy
 
         void Dispatch(const Event& event) const;
     private:
-        static std::unordered_map<std::type_index, EventType> const s_EventClassMap;
+        static UnorderedMap<std::type_index, EventType> const s_EventClassMap;
     private:
-        using EventListenerPtr = std::unique_ptr<EventListener>;
+        using EventListenerPtr = UniquePtr<EventListener>;
         struct EventListenerEqual
         {
             bool operator()(const EventListenerPtr& lhs, const EventListenerPtr& rhs) const
@@ -48,7 +48,7 @@ namespace Lumy
         };
 
         using EventListenerSet = std::unordered_set<EventListenerPtr, EventListenerHash, EventListenerEqual>;
-        std::unordered_map<EventType, EventListenerSet> m_Listeners;
+        UnorderedMap<EventType, EventListenerSet> m_Listeners;
     };
 }
 

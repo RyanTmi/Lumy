@@ -1,19 +1,14 @@
 #pragma once
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
+#include <AppKit/AppKit.hpp>
 
-struct WindowHandle;
-
-@interface MacOSApplicationDelegate : NSObject<NSApplicationDelegate>
-
-- (void)applicationWillFinishLaunching:(NSNotification *)notification;
-
-- (void)applicationDidFinishLaunching:(NSNotification *)notification;
-
-
-// Terminating Applications
-
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender;
-
-@end
+namespace Lumy
+{
+    class ApplicationDelegate : public NS::ApplicationDelegate
+    {
+    public:
+        void applicationWillFinishLaunching(NS::Notification* notification) override;
+        void applicationDidFinishLaunching(NS::Notification* notification) override;
+        bool applicationShouldTerminateAfterLastWindowClosed(NS::Application* sender) override;
+    };
+}

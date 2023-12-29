@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <string>
+#include "LumyEngine/Core/Foundation.hpp"
 
 namespace Lumy
 {
@@ -30,7 +30,7 @@ namespace Lumy
         virtual EventType Type() const = 0;
         virtual const char* Name() const = 0;
 
-        virtual std::string ToString() const
+        virtual String ToString() const
         {
             return Name();
         }

@@ -2,11 +2,17 @@
 
 namespace Lumy
 {
+
+#pragma region KeyEvent
+
     inline KeyEvent::KeyEvent(UInt16 keycode)
         : KeyCode(keycode)
     {
     }
 
+#pragma endregion KeyEvent
+
+#pragma region KeyPressedEvent
 
     inline KeyPressedEvent::KeyPressedEvent(UInt16 keycode)
         : KeyEvent(keycode) {}
@@ -28,6 +34,9 @@ namespace Lumy
         return oss.str();
     }
 
+#pragma endregion KeyPressedEvent
+
+#pragma region KeyReleasedEvent
 
     inline KeyReleasedEvent::KeyReleasedEvent(UInt16 keycode)
             : KeyEvent(keycode) {}
@@ -48,4 +57,7 @@ namespace Lumy
         oss << "KeyReleasedEvent : " << KeyCode;
         return oss.str();
     }
+
+#pragma endregion KeyReleasedEvent
+
 }

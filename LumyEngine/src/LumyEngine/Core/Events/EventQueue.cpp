@@ -2,12 +2,12 @@
 
 namespace Lumy
 {
-    void EventQueue::QueueEvent(std::unique_ptr<Event> event)
+    void EventQueue::QueueEvent(UniquePtr<Event> event)
     {
         m_EventQueue.push(std::move(event));
     }
 
-    std::unique_ptr<Event> EventQueue::DequeueEvent()
+    UniquePtr<Event> EventQueue::DequeueEvent()
     {
         if (m_EventQueue.empty())
         {

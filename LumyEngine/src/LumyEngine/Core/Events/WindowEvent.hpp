@@ -4,6 +4,9 @@
 
 namespace Lumy
 {
+
+#pragma region WindowResizeEvent
+
     struct WindowResizeEvent final : public Event
     {
         WindowResizeEvent(UInt16 width, UInt16 height);
@@ -16,6 +19,10 @@ namespace Lumy
         const UInt16 Height;
     };
 
+#pragma endregion WindowResizeEvent
+
+#pragma region WindowCloseEvent
+
     struct WindowCloseEvent final : public Event
     {
         WindowCloseEvent() = default;
@@ -24,5 +31,7 @@ namespace Lumy
         const char* Name() const override;
     };
 }
+
+#pragma endregion WindowCloseEvent
 
 #include "WindowEvent.inl"

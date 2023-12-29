@@ -4,6 +4,9 @@
 
 namespace Lumy
 {
+
+#pragma region KeyEvent
+
     struct KeyEvent : public Event
     {
         const UInt16 KeyCode;
@@ -11,6 +14,10 @@ namespace Lumy
     protected:
         explicit KeyEvent(UInt16 keycode);
     };
+
+#pragma endregion KeyEvent
+
+#pragma region KeyPressedEvent
 
     struct KeyPressedEvent final : public KeyEvent
     {
@@ -21,6 +28,10 @@ namespace Lumy
         std::string ToString() const override;
     };
 
+#pragma endregion KeyPressedEvent
+
+#pragma region KeyReleasedEvent
+
     struct KeyReleasedEvent final : public KeyEvent
     {
         explicit KeyReleasedEvent(UInt16 keycode);
@@ -29,6 +40,9 @@ namespace Lumy
         const char* Name() const override;
         std::string ToString() const override;
     };
+
+#pragma endregion KeyReleasedEvent
+
 }
 
 #include "KeyEvent.inl"

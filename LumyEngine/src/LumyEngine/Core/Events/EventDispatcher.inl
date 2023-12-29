@@ -23,7 +23,7 @@ namespace Lumy
         {
             auto& listeners = m_Listeners[eventType];
             EventClassListener<EventClass> eventListener(callback);
-            std::unique_ptr<EventListener> ptr(&eventListener);
+            UniquePtr<EventListener> ptr(&eventListener);
             if (const auto& it = listeners.find(ptr); it != listeners.end())
             {
                 listeners.erase(it);

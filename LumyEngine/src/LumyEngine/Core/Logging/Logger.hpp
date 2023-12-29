@@ -16,10 +16,11 @@
 #pragma once
 
 #include "LumyEngine/Core/Types.hpp"
+#include "LumyEngine/Core/Containers/Map.hpp"
+#include "LumyEngine/Core/Memory/Memory.hpp"
 #include "LumyEngine/Core/StringFormat.hpp"
 
 #include <fstream>
-#include <map>
 
 namespace Lumy
 {
@@ -70,8 +71,8 @@ namespace Lumy
         void WriteToFile(const std::string& message);
         void ApplyFlagFormat(FormatFlag formatFlag, Level logLevel, std::ostringstream& outStream) const;
 
-        static std::map<Level, const char*> s_LevelToColor;
-        static std::map<Level, const char*> s_LevelToString;
+        static UnorderedMap<Level, const char*> s_LevelToColor;
+        static UnorderedMap<Level, const char*> s_LevelToString;
     private:
         const std::string m_Name;
         std::ofstream m_LogFile;

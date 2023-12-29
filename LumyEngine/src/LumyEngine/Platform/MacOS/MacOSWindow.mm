@@ -1,85 +1,74 @@
 #include "MacOSWindow.hpp"
 
 #include "LumyEngine/Core/Foundation.hpp"
+#include "LumyEngine/Renderer/Renderer.hpp"
+#include "LumyEngine/Renderer/Metal/MetalBackend.hpp"
 
 #include "MacOSScopeAutoReleasePool.hpp"
 #include "MacOSApplicationDelegate.hpp"
 #include "MacOSWindowController.hpp"
+#include "MacOSViewDelegate.hpp"
+
+#include <AppKit/AppKit.hpp>
+#include <MetalKit/MetalKit.hpp>
+#include <Metal/Metal.hpp>
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
-#include <MetalKit/MetalKit.hpp>
-
 namespace Lumy
 {
-    static bool s_NSApplicationInitialized = false;
-
-    struct WindowHandle
+    struct MacOSWindow::WindowHandle
     {
+        NS::Window* GetWindow() const
+        {
+            return reinterpret_cast<NS::Window*>([WindowController window]);
+        }
+
         MacOSWindowController* WindowController;
-        NSView* View;
+        MTK::View* View;
+        MacOSViewDelegate* ViewDelegate;
     };
-
-    static void InitializeNSApplication()
-    {
-        const MacOSScopeAutoReleasePool pool;
-
-        [NSApplication sharedApplication];
-
-        // Setup Application Delegate
-        MacOSApplicationDelegate* applicationDelegate = [[MacOSApplicationDelegate alloc] init];
-        [NSApp setDelegate:applicationDelegate];
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-        [NSApp activateIgnoringOtherApps:YES];
-
-        s_NSApplicationInitialized = true;
-    }
     
     MacOSWindow::MacOSWindow(const WindowProperties& properties)
     {
         const MacOSScopeAutoReleasePool pool;
-
-        if (!s_NSApplicationInitialized)
-        {
-            InitializeNSApplication();
-        }
-
+        
         m_WindowHandle = std::make_unique<WindowHandle>();
 
-        // Setup Window
         NSRect rect = NSMakeRect(properties.X, properties.Y,
                                  static_cast<CGFloat>(properties.Width) / 2.0f,
                                  static_cast<CGFloat>(properties.Height) / 2.0f);
 
-        NSWindowStyleMask styleMask = 0;
-        styleMask |= NSWindowStyleMaskMiniaturizable;
-        styleMask |= NSWindowStyleMaskTitled;
-        styleMask |= NSWindowStyleMaskClosable;
-        styleMask |= NSWindowStyleMaskResizable;
+        NS::WindowStyleMask styleMask = 0;
+        styleMask |= NS::WindowStyleMaskMiniaturizable;
+        styleMask |= NS::WindowStyleMaskTitled;
+        styleMask |= NS::WindowStyleMaskClosable;
+        styleMask |= NS::WindowStyleMaskResizable;
 
-        NSWindow* window = [[NSWindow alloc] initWithContentRect:rect
-                                                       styleMask:styleMask
-                                                         backing:NSBackingStoreBuffered
-                                                           defer:NO];
+        NS::String* windowTitle = NS::String::string(properties.Title, NS::UTF8StringEncoding);
+        NS::Window* window = NS::Window::alloc()->init(rect, styleMask, NS::BackingStoreBuffered, false);
 
-        NSString* windowTitle = [NSString stringWithCString:properties.Title encoding:[NSString defaultCStringEncoding]];
-        [window setTitle:windowTitle];
-        [window center];
+        MetalBackend* backend = dynamic_cast<MetalBackend*>(Renderer::Get().GetBackend());
+        MTL::Device* device = backend->GetDevice();
+
+        m_WindowHandle->View = MTK::View::alloc()->init(rect, device);
+        m_WindowHandle->View->setColorPixelFormat(MTL::PixelFormatBGRA8Unorm);
+        
+        m_WindowHandle->ViewDelegate = new MacOSViewDelegate(backend);
+        m_WindowHandle->View->setDelegate(m_WindowHandle->ViewDelegate);
+
+        window->setContentView(m_WindowHandle->View);
+        window->setTitle(windowTitle);
+
+        [(__bridge NSWindow*)window center];
 
         // Setup Window Controller and Window Delegate
-        m_WindowHandle->WindowController = [[MacOSWindowController alloc] initWithWindow:window];
-        [window setDelegate:m_WindowHandle->WindowController];
-        
-        // Setup View
-//        m_WindowHandle->View = [[NSView alloc] init];
-//        [m_WindowHandle->View setHidden:NO];
-//        [m_WindowHandle->View setNeedsDisplay:YES];
-//        [m_WindowHandle->Window setContentView:m_WindowHandle->View];
-
+        m_WindowHandle->WindowController = [[MacOSWindowController alloc] initWithWindow:(__bridge NSWindow*)window];
+        [(__bridge NSWindow*)window setDelegate:m_WindowHandle->WindowController];
 
         // Show the window
-        [window makeKeyAndOrderFront:nil];
+        window->makeKeyAndOrderFront(nullptr);
     }
 
     MacOSWindow::~MacOSWindow()
@@ -87,19 +76,20 @@ namespace Lumy
         const MacOSScopeAutoReleasePool pool;
 
         [m_WindowHandle->WindowController release];
-        [m_WindowHandle->View release];
+        m_WindowHandle->View->release();
+        delete m_WindowHandle->ViewDelegate;
     }
 
     UInt16 MacOSWindow::GetWidth() const
     {
-        CGFloat width = [m_WindowHandle->WindowController window].frame.size.height;
-        return static_cast<UInt16>(width);
+        NSWindow* window = reinterpret_cast<NSWindow*>(m_WindowHandle->GetWindow());
+        return static_cast<UInt16>(window.frame.size.width);
     }
 
     UInt16 MacOSWindow::GetHeight() const
     {
-        CGFloat height = [m_WindowHandle->WindowController window].frame.size.height;
-        return static_cast<UInt16>(height);
+        NSWindow* window = reinterpret_cast<NSWindow*>(m_WindowHandle->GetWindow());
+        return static_cast<UInt16>(window.frame.size.height);
     }
     
     void MacOSWindow::Update()
@@ -119,5 +109,10 @@ namespace Lumy
             }
             [NSApp sendEvent:event];
         }
+    }
+    
+    void* MacOSWindow::GetNativeWindow() const
+    {
+        return m_WindowHandle->GetWindow();
     }
 }

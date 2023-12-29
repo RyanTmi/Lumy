@@ -1,15 +1,6 @@
 #pragma once
 
-#if defined(__OBJC__)
-
-@class NSAutoreleasePool;
-using AutoReleasePoolPointer = NSAutoreleasePool*;
-
-#else // If C++
-
-using AutoReleasePoolPointer = void*;
-
-#endif
+#include <Foundation/NSAutoreleasePool.hpp>
 
 namespace Lumy
 {
@@ -18,9 +9,7 @@ namespace Lumy
     public:
         MacOSScopeAutoReleasePool();
         ~MacOSScopeAutoReleasePool();
-    public:
-        void Drain() const;
     private:
-        AutoReleasePoolPointer m_AutoReleasePool;
+        NS::AutoreleasePool* m_AutoReleasePool;
     };
 }

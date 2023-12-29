@@ -1,6 +1,6 @@
 #include "MacOSWindowController.hpp"
 
-#include "LumyEngine/Core/Events/EventManager.hpp"
+#include "LumyEngine/Core/Events/Events.hpp"
 #include "LumyEngine/Core/Events/WindowEvent.hpp"
 
 using namespace Lumy;
@@ -17,12 +17,12 @@ using namespace Lumy;
 
     auto width = static_cast<UInt16>(size.width);
     auto height = static_cast<UInt16>(size.height);
-    EventManager::SendEvent(WindowResizeEvent(width, height));
+    Events::Get().SendEvent(WindowResizeEvent(width, height));
 }
 
 - (void)windowDidMiniaturize:(NSNotification *)notification
 {
-    EventManager::SendEvent(WindowResizeEvent(0, 0));
+    Events::Get().SendEvent(WindowResizeEvent(0, 0));
 }
 
 - (void)windowDidDeminiaturize:(NSNotification *)notification
@@ -35,7 +35,7 @@ using namespace Lumy;
 
     auto width = static_cast<UInt16>(size.width);
     auto height = static_cast<UInt16>(size.height);
-    EventManager::SendEvent(WindowResizeEvent(width, height));
+    Events::Get().SendEvent(WindowResizeEvent(width, height));
 }
 
 - (void)windowDidChangeScreen:(NSNotification *)notification
@@ -48,12 +48,12 @@ using namespace Lumy;
 
     auto width = static_cast<UInt16>(size.width);
     auto height = static_cast<UInt16>(size.height);
-    EventManager::SendEvent(WindowResizeEvent(width, height));
+    Events::Get().SendEvent(WindowResizeEvent(width, height));
 }
 
 - (BOOL)windowShouldClose:(NSWindow *)sender
 {
-    Lumy::EventManager::QueueEvent<WindowCloseEvent>();
+    Lumy::Events::Get().QueueEvent<WindowCloseEvent>();
     return YES;
 }
 

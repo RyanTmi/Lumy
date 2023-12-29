@@ -2,6 +2,9 @@
 
 namespace Lumy
 {
+
+#pragma region WindowResizeEvent
+
     inline WindowResizeEvent::WindowResizeEvent(UInt16 width, UInt16 height)
         : Width(width), Height(height)
     {
@@ -24,6 +27,10 @@ namespace Lumy
         return oss.str();
     }
 
+#pragma endregion WindowResizeEvent
+
+#pragma region WindowCloseEvent
+
     inline EventType WindowCloseEvent::Type() const
     {
         return EventType::WindowClose;
@@ -33,5 +40,7 @@ namespace Lumy
     {
         return "WindowCloseEvent";
     }
+
+#pragma endregion WindowCloseEvent
 
 }

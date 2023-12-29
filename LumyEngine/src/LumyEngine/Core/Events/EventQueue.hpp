@@ -9,12 +9,12 @@ namespace Lumy
     class EventQueue
     {
     public:
-        void QueueEvent(std::unique_ptr<Event> event);
+        void QueueEvent(UniquePtr<Event> event);
 
-        std::unique_ptr<Event> DequeueEvent();
+        UniquePtr<Event> DequeueEvent();
 
         bool HasEvent() const;
     private:
-        std::queue<std::unique_ptr<Event>> m_EventQueue;
+        std::queue<UniquePtr<Event>> m_EventQueue;
     };
 }
