@@ -18,3 +18,5 @@ profiles/
 
 *.xcodeproj/
 *.xcworkspace/
+
+Makefile

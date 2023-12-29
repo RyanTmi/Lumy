@@ -49,7 +49,3 @@ project "LumyTests"
         optimize "on"
     filter {}
 
-    filter { "configurations:Dist" }
-        runtime "Release"
-        optimize "on"
-    filter {}

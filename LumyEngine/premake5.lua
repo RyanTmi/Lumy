@@ -1,5 +1,5 @@
 project "LumyEngine"
-    kind "StaticLib"
+    kind "SharedLib"
     language "C++"
     cppdialect "C++20"
     staticruntime "off"
@@ -7,18 +7,21 @@ project "LumyEngine"
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
 
-    filter { "action:vs*" }
-        pchheader "lmpch.hpp"
-        pchsource "src/lmpch.cpp"
-    filter {}
+    -- filter { "action:vs*" }
+    --     pchheader "lmpch.hpp"
+    --     pchsource "src/LumyEngine/lmpch.cpp"
+    -- filter {}
 
-    filter { "action:xcode4" }
-        pchheader "src/lmpch.hpp"
-    filter {}
+    -- filter { "action:xcode4" }
+    --     pchheader "src/LumyEngine/lmpch.hpp"
+    -- filter {}
 
-    filter { "action:cmake" }
-        pchheader "Lumy/LumyEngine/src/lmpch.hpp"
-    filter {}
+    -- filter { "action:cmake" }
+    --     pchheader "Lumy/LumyEngine/src/LumyEngine/lmpch.hpp"
+    -- filter {}
+    defines {
+        "LM_EXPORT"
+    }
 
     files {
         "src/**.hpp", "src/**.inl",
@@ -31,8 +34,17 @@ project "LumyEngine"
         "vendor/metal/metal-cpp-extension",
     }
 
+    postbuildcommands {
+        "{MKDIR} %{cfg.buildtarget.directory}/../LumyTests",
+        "{COPYFILE} %{cfg.buildtarget.relpath} %{cfg.buildtarget.directory}/../LumyTests"
+    }
+
     filter { "system:macosx" }
         systemversion "14.0"
+
+        files {
+            "%{wks.location}/assets/shaders/*.metal"
+        }
 
         links {
             "Metal.framework",
@@ -58,12 +70,6 @@ project "LumyEngine"
 
     filter { "configurations:Release" }
         defines "LM_RELEASE"
-        runtime "Release"
-        optimize "on"
-    filter {}
-
-    filter { "configurations:Dist" }
-        defines "LM_DIST"
         runtime "Release"
         optimize "on"
     filter {}

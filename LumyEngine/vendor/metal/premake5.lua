@@ -39,6 +39,3 @@ project "MetalCpp"
         runtime "Release"
         optimize "on"
 
-    filter "configurations:Dist"
-        runtime "Release"
-        optimize "on"
