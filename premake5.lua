@@ -14,7 +14,7 @@ require "vendor/premake-cmake/cmake"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
-    include "LumyEngine/vendor/metal"
+    include "LumyEngine/vendor/MetalCpp"
 group ""
 
 group "Core"

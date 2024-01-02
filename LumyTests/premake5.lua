@@ -14,8 +14,8 @@ project "LumyTests"
 
     includedirs {
         "%{wks.location}/LumyEngine/src",
-        "%{wks.location}/LumyEngine/vendor/metal/metal-cpp",
-        "%{wks.location}/LumyEngine/vendor/metal/metal-cpp-extension",
+        -- "%{wks.location}/LumyEngine/vendor/metal/metal-cpp",
+        -- "%{wks.location}/LumyEngine/vendor/metal/metal-cpp-extension",
     }
 
     links {
@@ -30,7 +30,8 @@ project "LumyTests"
             "MetalKit.framework",
             "AppKit.framework",
             "Foundation.framework",
-            "QuartzCore.framework"
+            "QuartzCore.framework",
+            "GameController.framework",
         }
 
         xcodebuildsettings {

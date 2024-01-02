@@ -19,6 +19,7 @@ project "LumyEngine"
     -- filter { "action:cmake" }
     --     pchheader "Lumy/LumyEngine/src/LumyEngine/lmpch.hpp"
     -- filter {}
+
     defines {
         "LM_EXPORT"
     }
@@ -30,8 +31,7 @@ project "LumyEngine"
 
     includedirs {
         "src",
-        "vendor/metal/metal-cpp",
-        "vendor/metal/metal-cpp-extension",
+        "vendor/MetalCpp/Include",
     }
 
     postbuildcommands {
@@ -52,6 +52,7 @@ project "LumyEngine"
             "AppKit.framework",
             "Foundation.framework",
             "QuartzCore.framework",
+            "GameController.framework",
 
             "MetalCpp"
         }
