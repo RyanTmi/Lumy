@@ -34,9 +34,4 @@ namespace Lumy
             m_EventDispatcher.Dispatch(*event);
         }
     }
-
-    void Events::SendEvent(const Event& event)
-    {
-        m_EventDispatcher.Dispatch(event);
-    }
 }
