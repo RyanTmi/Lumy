@@ -16,7 +16,10 @@ public:
 
     void Update() override
     {
-
+        if (Lumy::Input::Get().IsKeyDown(Lumy::KeyCode::A))
+        {
+            Lumy::LogInfo("A");
+        }
     }
 
     void Shutdown() override

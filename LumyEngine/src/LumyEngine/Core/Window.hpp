@@ -13,11 +13,8 @@ namespace Lumy
 
         UInt16 Width = 1920;
         UInt16 Height = 1080;
-        
-        WindowProperties(const char* title = "Window Title")
-            : Title(title)
-        {
-        }
+
+        WindowProperties() = default;
     };
 
     class Window

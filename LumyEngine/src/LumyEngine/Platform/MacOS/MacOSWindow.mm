@@ -12,9 +12,11 @@
 #include <AppKit/AppKit.hpp>
 #include <MetalKit/MetalKit.hpp>
 #include <Metal/Metal.hpp>
+#include <QuartzCore/CAMetalLayer.hpp>
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
+#import <QuartzCore/CAMetalLayer.h>
 
 namespace Lumy
 {
@@ -22,12 +24,10 @@ namespace Lumy
     {
         NS::Window* GetWindow() const
         {
-            return reinterpret_cast<NS::Window*>([WindowController window]);
+            return (__bridge NS::Window*)[WindowController window];
         }
 
         MacOSWindowController* WindowController;
-        MTK::View* View;
-        MacOSViewDelegate* ViewDelegate;
     };
     
     MacOSWindow::MacOSWindow(const WindowProperties& properties)
@@ -49,26 +49,33 @@ namespace Lumy
         NS::String* windowTitle = NS::String::string(properties.Title, NS::UTF8StringEncoding);
         NS::Window* window = NS::Window::alloc()->init(rect, styleMask, NS::BackingStoreBuffered, false);
 
+        // TODO: Test
         MetalBackend* backend = dynamic_cast<MetalBackend*>(Renderer::Get().GetBackend());
         MTL::Device* device = backend->GetDevice();
-
-        m_WindowHandle->View = MTK::View::alloc()->init(rect, device);
-        m_WindowHandle->View->setColorPixelFormat(MTL::PixelFormatBGRA8Unorm);
+        CA::MetalLayer* layer = CA::MetalLayer::layer();
+        layer->setDevice(device);
+        layer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
+        backend->SetLayer(layer);
+        // TODO: Test
         
-        m_WindowHandle->ViewDelegate = new MacOSViewDelegate(backend);
-        m_WindowHandle->View->setDelegate(m_WindowHandle->ViewDelegate);
-
-        window->setContentView(m_WindowHandle->View);
         window->setTitle(windowTitle);
+        
+        NSWindow* objc_window = (__bridge NSWindow*) window;
+        [objc_window center];
 
-        [(__bridge NSWindow*)window center];
+        // TODO: Test
+        objc_window.contentView.layer = (__bridge CAMetalLayer*) layer;
+        objc_window.contentView.wantsLayer = YES;
+        // TODO: Test
 
         // Setup Window Controller and Window Delegate
-        m_WindowHandle->WindowController = [[MacOSWindowController alloc] initWithWindow:(__bridge NSWindow*)window];
-        [(__bridge NSWindow*)window setDelegate:m_WindowHandle->WindowController];
+        m_WindowHandle->WindowController = [[MacOSWindowController alloc] initWithWindow:objc_window];
+        [objc_window setDelegate:m_WindowHandle->WindowController];
+        [objc_window setAcceptsMouseMovedEvents:YES];
 
         // Show the window
-        window->makeKeyAndOrderFront(nullptr);
+        [m_WindowHandle->WindowController showWindow:objc_window];
+        [objc_window makeKeyAndOrderFront:nil];
     }
 
     MacOSWindow::~MacOSWindow()
@@ -76,8 +83,6 @@ namespace Lumy
         const MacOSScopeAutoReleasePool pool;
 
         [m_WindowHandle->WindowController release];
-        m_WindowHandle->View->release();
-        delete m_WindowHandle->ViewDelegate;
     }
 
     UInt16 MacOSWindow::GetWidth() const

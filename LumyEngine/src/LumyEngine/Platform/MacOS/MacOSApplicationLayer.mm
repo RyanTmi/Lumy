@@ -5,6 +5,8 @@
 #include "LumyEngine/Platform/MacOS/MacOSScopeAutoReleasePool.hpp"
 #include "LumyEngine/Platform/MacOS/MacOSWindow.hpp"
 
+#import <AppKit/AppKit.h>
+
 namespace Lumy
 {
     ApplicationLayer& ApplicationLayer::Get()
@@ -22,6 +24,12 @@ namespace Lumy
         m_Application = NS::Application::sharedApplication();
         m_Application->setDelegate(&m_ApplicationDelegate);
         m_Application->setActivationPolicy(NS::ActivationPolicyRegular);
+
+        if (![[NSRunningApplication currentApplication] isFinishedLaunching])
+        {
+            [NSApp run];
+        }
+
         m_Application->activateIgnoringOtherApps(true);
 
         Log::Info("MacOS platform application created");
@@ -29,7 +37,6 @@ namespace Lumy
 
     void MacOSApplicationLayer::Update()
     {
-
         m_Window->Update();
     }
 

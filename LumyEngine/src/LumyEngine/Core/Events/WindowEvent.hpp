@@ -4,7 +4,6 @@
 
 namespace Lumy
 {
-
 #pragma region WindowResizeEvent
 
     struct WindowResizeEvent final : public Event
@@ -13,7 +12,7 @@ namespace Lumy
 
         EventType Type() const override;
         const char* Name() const override;
-        std::string ToString() const override;
+        String ToString() const override;
 
         const UInt16 Width;
         const UInt16 Height;
@@ -30,13 +29,8 @@ namespace Lumy
         EventType Type() const override;
         const char* Name() const override;
     };
-}
 
 #pragma endregion WindowCloseEvent
-
-
-namespace Lumy
-{
 
 #pragma region WindowResizeEvent
 
@@ -55,7 +49,7 @@ namespace Lumy
         return "WindowResizeEvent";
     }
 
-    inline std::string WindowResizeEvent::ToString() const
+    inline String WindowResizeEvent::ToString() const
     {
         std::ostringstream oss;
         oss << "WindowResizeEvent : " << Width << ", " << Height;
@@ -77,5 +71,4 @@ namespace Lumy
     }
 
 #pragma endregion WindowCloseEvent
-
 }

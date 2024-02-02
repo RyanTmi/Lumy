@@ -6,9 +6,4 @@ namespace Lumy
          : m_MetalBackend(metalBackend)
     {
     }
-
-    void MacOSViewDelegate::drawInMTKView(MTK::View* view)
-    {
-        m_MetalBackend->Draw(view);
-    }
 }

@@ -1,18 +1,20 @@
 #pragma once
 
+#include "LumyEngine/Core/Input/KeyCode.hpp"
+#include "LumyEngine/Core/Input/MouseButton.hpp"
+
 #include "Event.hpp"
 
 namespace Lumy
 {
-
 #pragma region KeyEvent
 
     struct KeyEvent : public Event
     {
-        const UInt16 KeyCode;
+        const KeyCode Code;
 
     protected:
-        explicit KeyEvent(UInt16 keycode);
+        explicit KeyEvent(KeyCode code);
     };
 
 #pragma endregion KeyEvent
@@ -21,11 +23,11 @@ namespace Lumy
 
     struct KeyPressedEvent final : public KeyEvent
     {
-        explicit KeyPressedEvent(UInt16 keycode);
+        explicit KeyPressedEvent(KeyCode code);
 
         EventType Type() const override;
         const char* Name() const override;
-        std::string ToString() const override;
+        String ToString() const override;
     };
 
 #pragma endregion KeyPressedEvent
@@ -34,24 +36,19 @@ namespace Lumy
 
     struct KeyReleasedEvent final : public KeyEvent
     {
-        explicit KeyReleasedEvent(UInt16 keycode);
+        explicit KeyReleasedEvent(KeyCode code);
 
         EventType Type() const override;
         const char* Name() const override;
-        std::string ToString() const override;
+        String ToString() const override;
     };
 
 #pragma endregion KeyReleasedEvent
 
-}
-
-namespace Lumy
-{
-
 #pragma region KeyEvent
 
-    inline KeyEvent::KeyEvent(UInt16 keycode)
-        : KeyCode(keycode)
+    inline KeyEvent::KeyEvent(KeyCode code)
+        : Code(code)
     {
     }
 
@@ -59,8 +56,8 @@ namespace Lumy
 
 #pragma region KeyPressedEvent
 
-    inline KeyPressedEvent::KeyPressedEvent(UInt16 keycode)
-        : KeyEvent(keycode) {}
+    inline KeyPressedEvent::KeyPressedEvent(KeyCode code)
+        : KeyEvent(code) {}
 
     inline EventType KeyPressedEvent::Type() const
     {
@@ -72,10 +69,10 @@ namespace Lumy
         return "KeyPressEvent";
     }
 
-    inline std::string KeyPressedEvent::ToString() const
+    inline String KeyPressedEvent::ToString() const
     {
         std::ostringstream oss;
-        oss << "KeyPressEvent : " << KeyCode;
+        oss << "KeyPressEvent : " << static_cast<UInt16>(Code);
         return oss.str();
     }
 
@@ -83,8 +80,8 @@ namespace Lumy
 
 #pragma region KeyReleasedEvent
 
-    inline KeyReleasedEvent::KeyReleasedEvent(UInt16 keycode)
-            : KeyEvent(keycode) {}
+    inline KeyReleasedEvent::KeyReleasedEvent(KeyCode code)
+            : KeyEvent(code) {}
 
     inline EventType KeyReleasedEvent::Type() const
     {
@@ -96,13 +93,12 @@ namespace Lumy
         return "KeyReleasedEvent";
     }
 
-    inline std::string KeyReleasedEvent::ToString() const
+    inline String KeyReleasedEvent::ToString() const
     {
         std::ostringstream oss;
-        oss << "KeyReleasedEvent : " << KeyCode;
+        oss << "KeyReleasedEvent : " << static_cast<UInt16>(Code);
         return oss.str();
     }
 
 #pragma endregion KeyReleasedEvent
-
 }

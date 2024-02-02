@@ -10,8 +10,6 @@ namespace Lumy
     {
     public:
         MacOSViewDelegate(MetalBackend* metalBackend);
-    public:
-        void drawInMTKView(MTK::View* view) override;
     private:
         MetalBackend* m_MetalBackend;
     };

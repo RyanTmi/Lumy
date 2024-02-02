@@ -8,5 +8,6 @@
 #include "LumyEngine/Core/Application.hpp"
 
 #include "LumyEngine/Core/Events/Events.hpp"
+#include "LumyEngine/Core/Input/Inputs.hpp"
 
 #include "LumyEngine/Debug/Profiler.hpp"

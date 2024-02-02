@@ -20,11 +20,13 @@ namespace Lumy
         Log::Info("Initialize Metalbackend");
 
         Log::Trace("  Create System Default Device");
-        m_Device = MTL::CreateSystemDefaultDevice();
+        m_Device = m_MetalDevice.GetDevice();
+        // m_Device = MTL::CreateSystemDefaultDevice();
 
         if (m_Device == nullptr)
         {
             Log::Fatal("Can not create system default device");
+            return;
         }
 
         // https://developer.apple.com/documentation/metal/mtldevice/device_inspection
@@ -53,7 +55,9 @@ namespace Lumy
         Log::Debug("  current allocated size:           {}", m_Device->currentAllocatedSize());
         Log::Debug("  recommended max working set size: {}", m_Device->recommendedMaxWorkingSetSize());
         Log::Debug("  max transfer rate:                {}", m_Device->maxTransferRate());
-        
+
+        m_Layer = CA::MetalLayer::layer();
+
         Log::Trace("  Create New Command Queue");
         m_CommandQueue = m_Device->newCommandQueue();
 
@@ -82,16 +86,21 @@ namespace Lumy
 
     void MetalBackend::Render()
     {
-
+        Draw();
     }
 
-    void MetalBackend::Draw(MTK::View* view)
+    void MetalBackend::Draw()
     {
         MTL::CommandBuffer* commandBuffer = m_CommandQueue->commandBuffer();
-        MTL::RenderPassDescriptor* renderPass = view->currentRenderPassDescriptor();
-        // renderPass->colorAttachments()->object(0)->setTexture(view->currentDrawable()->texture());
-        renderPass->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-        renderPass->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.2, 0.5, 0.3, 1.0));
+        MTL::RenderPassDescriptor* renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
+        MTL::RenderPassColorAttachmentDescriptor* cd = renderPassDescriptor->colorAttachments()->object(0);
+
+        CA::MetalDrawable* drawable = m_Layer->nextDrawable();
+
+        cd->setTexture(drawable->texture());
+        cd->setLoadAction(MTL::LoadActionClear);
+        cd->setClearColor(MTL::ClearColor::Make(0.2, 0.5, 0.3, 1.0));
+        cd->setStoreAction(MTL::StoreActionStore);
 
         const Array<Float32, 12> triangles = {
             -0.75, -0.75, 0.0,
@@ -108,17 +117,19 @@ namespace Lumy
         auto vertexBuffer = NS::TransferPtr(m_Device->newBuffer(triangles.data(), sizeof(Float32) * triangles.size(), MTL::ResourceStorageModeShared));
         auto indexBuffer = NS::TransferPtr(m_Device->newBuffer(indices.data(), sizeof(UInt16) * indices.size(), MTL::ResourceStorageModeShared));
 
-        MTL::RenderCommandEncoder* encoder = commandBuffer->renderCommandEncoder(renderPass);
+        MTL::RenderCommandEncoder* encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
         encoder->setRenderPipelineState(m_RenderPipelineState);
         encoder->setVertexBuffer(vertexBuffer.get(), 0, 0);
         // encoder->setTriangleFillMode(MTL::TriangleFillModeLines);
-
         // encoder->drawPrimitives(MTL::PrimitiveType::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
         encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle, indices.size(), MTL::IndexTypeUInt16, indexBuffer.get(), 0);
         encoder->endEncoding();
 
-        commandBuffer->presentDrawable(view->currentDrawable());
+        commandBuffer->presentDrawable(drawable);
         commandBuffer->commit();
+        commandBuffer->waitUntilCompleted();
+
+        renderPassDescriptor->release();
     }
 
     MTL::Device* MetalBackend::GetDevice() const
@@ -129,6 +140,11 @@ namespace Lumy
     MTL::CommandQueue* MetalBackend::GetCommandQueue()const
     {
         return m_CommandQueue;
+    }
+    
+    void MetalBackend::SetLayer(CA::MetalLayer* layer)
+    {
+        m_Layer = layer;
     }
     
     void MetalBackend::BuildShaders()

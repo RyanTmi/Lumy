@@ -6,6 +6,8 @@
 #include "LumyEngine/Core/Events/Events.hpp"
 #include "LumyEngine/Core/Events/WindowEvent.hpp"
 
+#include "LumyEngine/Core/Input/Inputs.hpp"
+
 #include "LumyEngine/Renderer/Renderer.hpp"
 
 #include "LumyEngine/Debug/Profiler.hpp"
@@ -26,21 +28,23 @@ namespace Lumy
 
         // Platform layer
         ApplicationLayer::Get().Initialize();
-        WindowProperties windowProperties;
-        windowProperties.Title = application->GetConfiguration().ApplicationName;
-        windowProperties.X = application->GetConfiguration().WindowX;
-        windowProperties.Y = application->GetConfiguration().WindowY;
-        windowProperties.Width = application->GetConfiguration().WindowWidth;
-        windowProperties.Height = application->GetConfiguration().WindowHeight;
 
         // Renderer
         Renderer::Get().Initialize();
 
+        WindowProperties windowProperties {};
+        windowProperties.Title  = application->GetConfiguration().ApplicationName;
+        windowProperties.X      = application->GetConfiguration().WindowX;
+        windowProperties.Y      = application->GetConfiguration().WindowY;
+        windowProperties.Width  = application->GetConfiguration().WindowWidth;
+        windowProperties.Height = application->GetConfiguration().WindowHeight;
         ApplicationLayer::Get().CreateWindow(windowProperties);
 
         Events::Get().Initialize();
         Events::Get().Subscribe<WindowResizeEvent>(MakeDelegate<&Engine::OnWindowResize>(this));
         Events::Get().Subscribe<WindowCloseEvent>(MakeDelegate<&Engine::OnWindowClose>(this));
+        
+        Input::Get().Initialize();
 
         // Application
         m_Application = UniquePtr<Application>(application);
@@ -60,6 +64,8 @@ namespace Lumy
         Log::Info("Engine Shutdown");
         // Application
         m_Application->Shutdown();
+        
+        Input::Get().Shutdown();
 
         Events::Get().Unsubscribe<WindowResizeEvent>(MakeDelegate<&Engine::OnWindowResize>(this));
         Events::Get().Unsubscribe<WindowCloseEvent>(MakeDelegate<&Engine::OnWindowClose>(this));
@@ -87,7 +93,9 @@ namespace Lumy
                 m_Application->Update();
             }
 
+            Renderer::Get().GetBackend()->Render();
             Events::Get().PublishEvents();
+            Input::Get().Update();
         }
 
         m_Running = false;

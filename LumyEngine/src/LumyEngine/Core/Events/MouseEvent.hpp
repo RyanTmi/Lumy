@@ -1,19 +1,21 @@
 #pragma once
 
+#include "LumyEngine/Core/Input/KeyCode.hpp"
+#include "LumyEngine/Core/Input/MouseButton.hpp"
+
 #include "Event.hpp"
 
 namespace Lumy
 {
-
 #pragma region MouseButtonEvent
 
     struct MouseButtonEvent : public Event
     {
-        const UInt16 Button;
+        const MouseButton Button;
 
         MouseButtonEvent() = delete;
     protected:
-        explicit MouseButtonEvent(UInt16 button);
+        explicit MouseButtonEvent(MouseButton button);
     };
 
 #pragma endregion MouseButtonEvent
@@ -22,11 +24,11 @@ namespace Lumy
 
     struct MouseButtonPressedEvent final : public MouseButtonEvent
     {
-        explicit MouseButtonPressedEvent(UInt16 button);
+        explicit MouseButtonPressedEvent(MouseButton button);
 
         EventType Type() const override;
         const char* Name() const override;
-        std::string ToString() const override;
+        String ToString() const override;
     };
 
 #pragma endregion MouseButtonPressedEvent
@@ -35,11 +37,11 @@ namespace Lumy
 
     struct MouseButtonReleasedEvent final : public MouseButtonEvent
     {
-        explicit MouseButtonReleasedEvent(UInt16 button);
+        explicit MouseButtonReleasedEvent(MouseButton button);
 
         EventType Type() const override;
         const char* Name() const override;
-        std::string ToString() const override;
+        String ToString() const override;
     };
 
 #pragma endregion MouseButtonReleasedEvent
@@ -52,7 +54,7 @@ namespace Lumy
 
         EventType Type() const override;
         const char* Name() const override;
-        std::string ToString() const override;
+        String ToString() const override;
 
         const Float32 MouseX;
         const Float32 MouseY;
@@ -68,7 +70,7 @@ namespace Lumy
 
         EventType Type() const override;
         const char* Name() const override;
-        std::string ToString() const override;
+        String ToString() const override;
 
         const Float32 XOffset;
         const Float32 YOffset;
@@ -76,15 +78,9 @@ namespace Lumy
 
 #pragma endregion MouseScrolledEvent
 
-}
-
-
-namespace Lumy
-{
-
 #pragma region MouseButtonEvent
 
-    inline MouseButtonEvent::MouseButtonEvent(UInt16 button)
+    inline MouseButtonEvent::MouseButtonEvent(MouseButton button)
         : Button(button)
     {
     }
@@ -93,7 +89,7 @@ namespace Lumy
 
 #pragma region MouseButtonPressedEvent
 
-    inline MouseButtonPressedEvent::MouseButtonPressedEvent(UInt16 button)
+    inline MouseButtonPressedEvent::MouseButtonPressedEvent(MouseButton button)
         : MouseButtonEvent(button)
     {
     }
@@ -108,10 +104,10 @@ namespace Lumy
         return "MouseButtonPressedEvent";
     }
 
-    inline std::string MouseButtonPressedEvent::ToString() const
+    inline String MouseButtonPressedEvent::ToString() const
     {
         std::ostringstream oss;
-        oss << "MouseButtonPressedEvent : " << Button;
+        oss << "MouseButtonPressedEvent : " << static_cast<UInt16>(Button);
         return oss.str();
     }
 
@@ -119,7 +115,7 @@ namespace Lumy
 
 #pragma region MouseButtonReleasedEvent
 
-    inline MouseButtonReleasedEvent::MouseButtonReleasedEvent(UInt16 button)
+    inline MouseButtonReleasedEvent::MouseButtonReleasedEvent(MouseButton button)
         : MouseButtonEvent(button) {}
 
     inline EventType MouseButtonReleasedEvent::Type() const
@@ -132,10 +128,10 @@ namespace Lumy
         return "MouseButtonReleasedEvent";
     }
 
-    inline std::string MouseButtonReleasedEvent::ToString() const
+    inline String MouseButtonReleasedEvent::ToString() const
     {
         std::ostringstream oss;
-        oss << "MouseButtonReleasedEvent : " << Button;
+        oss << "MouseButtonReleasedEvent : " << static_cast<UInt16>(Button);
         return oss.str();
     }
 
@@ -158,7 +154,7 @@ namespace Lumy
         return "MouseMoveEvent";
     }
 
-    inline std::string MouseMovedEvent::ToString() const
+    inline String MouseMovedEvent::ToString() const
     {
         std::ostringstream oss;
         oss << "MouseMoveEvent : " << MouseX << ", " << MouseY;
@@ -184,7 +180,7 @@ namespace Lumy
         return "MouseScrolledEvent";
     }
 
-    inline std::string MouseScrolledEvent::ToString() const
+    inline String MouseScrolledEvent::ToString() const
     {
         std::ostringstream oss;
         oss << "MouseScrolledEvent : " << XOffset << ", " << YOffset;
@@ -192,5 +188,4 @@ namespace Lumy
     }
 
 #pragma endregion MouseScrolledEvent
-
 }
