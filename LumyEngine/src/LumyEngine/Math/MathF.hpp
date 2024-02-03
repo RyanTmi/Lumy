@@ -20,7 +20,7 @@ namespace Lumy
         static inline Float64 InverseSqrt(Float64 x);
 
         template <typename NumericType>
-        static inline NumericType Abs(const NumericType x);
+        static inline NumericType Abs(NumericType x);
 
         template <typename NumericType>
         static inline Bool8 Equal(NumericType x, NumericType y);

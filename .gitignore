@@ -2,8 +2,7 @@
 .vscode/
 .cache/
 
-.clion_cmake-build/
-.vscode_cmake-build/
+.CMakeBuild/
 
 bin/
 obj/

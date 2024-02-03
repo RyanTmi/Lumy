@@ -8,5 +8,6 @@
 #include "LumyEngine/Core/Logging/Log.hpp"
 
 #include "LumyEngine/Math/MathF.hpp"
+#include "LumyEngine/Math/Vector2.hpp"
 
 #include "LumyEngine/Debug/Profiler.hpp"

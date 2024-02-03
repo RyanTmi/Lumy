@@ -195,10 +195,8 @@ namespace Lumy
     inline Profiler::Profiler()
         : m_CurrentSession(nullptr), m_SessionInProgress(false)
     {
-        if (!std::filesystem::create_directory("profiles"))
-        {
-            // TODO - Error handling
-        }
+        // TODO - Error handling
+        std::filesystem::create_directory("profiles");
     }
 
     inline Profiler::~Profiler()
