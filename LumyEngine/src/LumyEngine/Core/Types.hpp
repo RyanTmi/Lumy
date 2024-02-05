@@ -32,7 +32,34 @@ namespace Lumy
     /**
      * @brief Alias for floating-point types.
      */
-    using Float32 = float;
+    struct Float32
+    {
+    public:
+        constexpr Float32(float x = 0.0f)
+            : m_X(x)
+        {}
+        operator float() const { return m_X; }
+
+        Float32 operator+(Float32 x) const { return m_X + x; }
+        Float32& operator+=(Float32 x) { m_X += x; return *this; }
+
+        Float32 operator-(Float32 x) const { return m_X - x; }
+        Float32& operator-=(Float32 x) { m_X -= x; return *this; }
+
+        Float32 operator*(Float32 x) const { return m_X * x; }
+        Float32& operator*=(Float32 x) { m_X *= x; return *this; }
+
+        Float32 operator/(Float32 x) const { return m_X / x; }
+        Float32& operator/=(Float32 x) { m_X /= x; return *this; }
+
+        bool operator==(float x) const { return m_X == x; }
+        bool operator==(Float32 x) const { return m_X == x; }
+        bool operator!=(float x) const { return m_X != x; }
+        bool operator!=(Float32 x) const { return m_X != x; }
+    private:
+        float m_X;
+    };
+
     using Float64 = double;
 
     /**
