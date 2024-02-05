@@ -6,7 +6,7 @@
 namespace Lumy
 {
     const Vector3 Vector3::Zero    = Vector3( 0.0f,  0.0f,  0.0f);
-    const Vector3 Vector3::One     = Vector3( 1.0f,  1.0f,  0.0f);
+    const Vector3 Vector3::One     = Vector3( 1.0f,  1.0f,  1.0f);
     const Vector3 Vector3::Left    = Vector3(-1.0f,  0.0f,  0.0f);
     const Vector3 Vector3::Right   = Vector3( 1.0f,  0.0f,  0.0f);
     const Vector3 Vector3::Up      = Vector3( 0.0f,  1.0f,  0.0f);
@@ -47,7 +47,7 @@ namespace Lumy
 
     Float32 Vector3::operator[](UInt16 i) const
     {
-        if (i > 1)
+        if (i > 2)
         {
             Log::Warn("Vector3: operator[]: Index {} out of bound. Returning 1.0f", i);
             return 1;
