@@ -12,9 +12,9 @@ namespace Lumy
         }
 
         Log::Info("{} device(s) found", devices->count());
-        for (UInt8 i = 0; i < devices->count(); ++i)
+        for (NS::UInteger i = 0; i < devices->count(); ++i)
         {
-            MTL::Device* device = devices->object<MTL::Device>(i);
+            auto* device = devices->object<MTL::Device>(i);
             if (IsValidDevice(device))
             {
                 m_Device = device;

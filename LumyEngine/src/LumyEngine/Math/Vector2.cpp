@@ -1,7 +1,7 @@
 #include "Vector2.hpp"
 
 #include "LumyEngine/Core/Foundation.hpp"
-#include "MathF.hpp"
+#include "Math.hpp"
 
 namespace Lumy
 {
@@ -45,7 +45,7 @@ namespace Lumy
 
     Float32 Vector2::Magnitude() const
     {
-        return MathF::Sqrt(SqrMagnitude());
+        return Math::Sqrt(SqrMagnitude());
     }
 
     Vector2& Vector2::Normalize()
