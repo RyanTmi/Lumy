@@ -1,8 +1,17 @@
 .idea/
 .vscode/
-.cache/
+
+*.xcodeproj/
+*.xcworkspace/
+.DS_Store
+
+Makefile
 
 .CMakeBuild/
+CMakeLists.txt
+.cmake
+
+.cache/
 
 bin/
 obj/
@@ -10,12 +19,3 @@ build/
 
 logs/
 profiles/
-
-**/.DS_Store
-**/CMakeLists.txt
-*.cmake
-
-*.xcodeproj/
-*.xcworkspace/
-
-Makefile
