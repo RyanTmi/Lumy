@@ -1,0 +1,6 @@
+[submodule "engine/vendor/metal-cpp"]
+	path = engine/vendor/metal-cpp
+	url = https://github.com/RyanTmi/metal-cpp
+[submodule "vendor/premake/cmake"]
+	path = vendor/premake/cmake
+	url = https://github.com/RyanTmi/premake-cmake
