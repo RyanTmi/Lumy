@@ -9,7 +9,7 @@ Makefile
 
 .CMakeBuild/
 CMakeLists.txt
-.cmake
+*.cmake
 
 .cache/
 
