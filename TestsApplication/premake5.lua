@@ -1,22 +1,22 @@
-project "tests"
+project "TestsApplication"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++20"
     staticruntime "off"
 
-    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
+    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/%{prj.name}")
+    objdir ("%{wks.location}/Binaries/Intermediate/" .. outputdir .. "/%{prj.name}")
 
     files {
-        "source/**.hpp", "source/**.cpp"
+        "Source/**.hpp", "Source/**.cpp"
     }
 
     includedirs {
-        "%{wks.location}/engine/source",
+        "%{wks.location}/Engine/Source",
     }
 
     links {
-        "engine"
+        "Engine"
     }
 
     filter { "system:macosx" }
@@ -29,6 +29,7 @@ project "tests"
             "Foundation.framework",
             "QuartzCore.framework",
             "GameController.framework",
+            "Cocoa.framework",
         }
 
         xcodebuildsettings {

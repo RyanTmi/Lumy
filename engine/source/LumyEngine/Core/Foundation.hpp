@@ -13,10 +13,3 @@
         #define LUMY_API
     #endif
 #endif
-
-#include <iostream>
-
-namespace lumy
-{
-    LUMY_API auto lumy_engine() -> void;
-}

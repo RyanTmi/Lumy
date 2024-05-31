@@ -1,30 +1,38 @@
-project "engine"
+local vulkan_sdk = os.getenv("VULKAN_SDK")
+
+project "Engine"
     kind "SharedLib"
     language "C++"
     cppdialect "C++20"
     staticruntime "off"
 
-    targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
-    objdir ("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
+    targetdir ("%{wks.location}/Binaries/" .. outputdir .. "/%{prj.name}")
+    objdir ("%{wks.location}/Binaries/Intermediate/" .. outputdir .. "/%{prj.name}")
 
     defines {
         "LM_EXPORT"
     }
 
     files {
-        "source/**.hpp", "source/**.cpp", "source/**.mm" ,
+        "Source/**.hpp", "Source/**.cpp", "Source/**.mm" ,
     }
 
     includedirs {
-        "source",
-        "vendor/metal-cpp/include",
+        "Source",
+        "Vendor/metal-cpp/Include",
+
+        vulkan_sdk .. "/include",
     }
+
+    -- links {
+    --     "vulkan",
+    -- }
 
     filter { "system:macosx" }
         systemversion "14.0"
 
         files {
-            "%{wks.location}/assets/shaders/*.metal"
+            "%{wks.location}/Assets/Shaders/*.metal"
         }
 
         links {
@@ -33,9 +41,9 @@ project "engine"
             "AppKit.framework",
             "Foundation.framework",
             "QuartzCore.framework",
-            "GameController.framework",
+            "Cocoa.framework",
 
-            "metal-cpp"
+            "metal-cpp",
         }
 
         xcodebuildsettings {
