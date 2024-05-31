@@ -1,3 +1,1 @@
-# Lumy
- 
-## Lumy Game Engine
+# Lumy Game Engine
