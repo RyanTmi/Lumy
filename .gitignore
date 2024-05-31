@@ -13,9 +13,7 @@ CMakeLists.txt
 
 .cache/
 
-bin/
-obj/
-build/
+Binaries/
 
-logs/
-profiles/
+Logs/
+Profiles/
