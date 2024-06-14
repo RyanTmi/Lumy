@@ -1,21 +1,20 @@
 .idea/
 .vscode/
-.cache/
-
-.CMakeBuild/
-
-bin/
-obj/
-build/
-
-logs/
-profiles/
-
-**/.DS_Store
-**/CMakeLists.txt
-*.cmake
 
 *.xcodeproj/
 *.xcworkspace/
+*.metallib
+.DS_Store
 
 Makefile
+
+.CMakeBuild/
+CMakeLists.txt
+*.cmake
+
+.cache/
+
+Binaries/
+
+Logs/
+Profiles/

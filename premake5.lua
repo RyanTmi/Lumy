@@ -1,6 +1,10 @@
+require "Vendor/Premake/CMake/cmake"
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
 workspace "Lumy"
+    -- location "./"
     configurations { "Debug", "Release" }
-    startproject "LumyEngine"
+    startproject "Engine"
 
     filter { "system:macosx" }
         architecture "ARM64"
@@ -10,17 +14,15 @@ workspace "Lumy"
         architecture "x86_64"
     filter {}
 
-require "vendor/premake-cmake/cmake"
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-group "Dependencies"
-    include "LumyEngine/vendor/MetalCpp"
-group ""
+    group "Dependencies"
+        include "Engine/Vendor/metal-cpp"
+    group ""
 
-group "Core"
-    include "LumyEngine"
-group ""
+    group "Core"
+        include "Engine"
+    group ""
 
-group "Tests"
-    include "LumyTests"
-group ""
+    group "Tests"
+        include "TestsApplication"
+    group ""
