@@ -1,6 +1,6 @@
 #include "Inputs.hpp"
 
-#include "LumyEngine/Core/Event/CoreEvents.hpp"
+#include "LumyEngine/Core/Event/EventManager.hpp"
 #include "LumyEngine/Core/Event/KeyEvent.hpp"
 #include "LumyEngine/Core/Event/MouseEvent.hpp"
 
@@ -62,12 +62,12 @@ namespace Lumy
         if (pressed)
         {
             s_Context->Keys[key] = 1;
-            CoreEvents::Fire<KeyPressEvent>(key);
+            EventManager::Fire<KeyPressEvent>(key);
         }
         else
         {
             s_Context->Keys[key] = 0;
-            CoreEvents::Fire<KeyReleaseEvent>(key);
+            EventManager::Fire<KeyReleaseEvent>(key);
         }
     }
 
@@ -77,11 +77,11 @@ namespace Lumy
 
         if (pressed)
         {
-            CoreEvents::Fire<MouseButtonPressEvent>(button);
+            EventManager::Fire<MouseButtonPressEvent>(button);
         }
         else
         {
-            CoreEvents::Fire<MouseButtonReleaseEvent>(button);
+            EventManager::Fire<MouseButtonReleaseEvent>(button);
         }
     }
 
@@ -89,11 +89,11 @@ namespace Lumy
     {
         s_Context->MouseX = x;
         s_Context->MouseY = y;
-        CoreEvents::Fire<MouseMoveEvent>(x, y);
+        EventManager::Fire<MouseMoveEvent>(x, y);
     }
 
     auto Inputs::ProcessMouseScroll(Float64 deltaX, Float64 deltaY) -> void
     {
-        CoreEvents::Fire<MouseScrollEvent>(deltaX, deltaY);
+        EventManager::Fire<MouseScrollEvent>(deltaX, deltaY);
     }
 }

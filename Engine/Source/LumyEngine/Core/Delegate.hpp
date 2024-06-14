@@ -15,8 +15,7 @@ namespace Lumy
 
     template <auto Function>
     struct FunctionBindTarget
-    {
-    };
+    {};
 
     template <auto MemberFunction, typename Class>
     struct MemberBindTarget
@@ -28,12 +27,11 @@ namespace Lumy
     constexpr auto MakeDelegate() -> FunctionBindTarget<Function>;
 
     template <auto MemberFunction, typename Class>
-    constexpr auto
-        MakeDelegate(Class* instance) -> MemberBindTarget<MemberFunction, Class>;
+    constexpr auto MakeDelegate(Class* instance) -> MemberBindTarget<MemberFunction, Class>;
 
-    //==============================================================================================
-    // class : Delegate
-    //==============================================================================================
+    //==================================================================================================================
+    // Class : Delegate
+    //==================================================================================================================
 
     template <typename Signature>
     class Delegate;
@@ -55,14 +53,12 @@ namespace Lumy
         constexpr Delegate(MemberBindTarget<MemberFunction, Class> target) noexcept;
 
         template <auto MemberFunction, typename Class>
-        constexpr Delegate(
-            MemberBindTarget<MemberFunction, const Class> target) noexcept;
+        constexpr Delegate(MemberBindTarget<MemberFunction, const Class> target) noexcept;
 
     public:
         constexpr auto operator=(const Delegate& other) noexcept -> Delegate& = default;
 
-        template <typename... UArgs,
-                  typename = std::enable_if_t<std::is_invocable_v<ReturnType(Args...), UArgs...>>>
+        template <typename... UArgs, typename = std::enable_if_t<std::is_invocable_v<ReturnType(Args...), UArgs...>>>
         constexpr auto operator()(UArgs&&... args) const -> ReturnType;
 
         constexpr auto operator==(const Delegate& rhs) const noexcept -> bool;
@@ -73,13 +69,15 @@ namespace Lumy
 
         constexpr operator bool() const noexcept { return HasTarget(); }
 
-        template <auto Function, typename = std::enable_if_t<std::is_invocable_r_v<
-                                     ReturnType, decltype(Function), Args...>>>
+        template <
+            auto Function,
+            typename = std::enable_if_t<std::is_invocable_r_v<ReturnType, decltype(Function), Args...>>>
         constexpr auto Bind() noexcept -> void;
 
-        template <auto MemberFunction, typename Class,
-                  typename = std::enable_if_t<
-                      std::is_invocable_r_v<ReturnType, decltype(MemberFunction), Class*, Args...>>>
+        template <
+            auto MemberFunction,
+            typename Class,
+            typename = std::enable_if_t<std::is_invocable_r_v<ReturnType, decltype(MemberFunction), Class*, Args...>>>
         constexpr auto Bind(Class* cls) noexcept -> void;
 
     private:
@@ -96,17 +94,17 @@ namespace Lumy
         StubFunction m_Stub = &NullStub;
     };
 
-    //==============================================================================================
-    // class : BadDelegateCall
-    //==============================================================================================
+    //==================================================================================================================
+    // Class : BadDelegateCall
+    //==================================================================================================================
 
     inline BadDelegateCall::BadDelegateCall()
         : runtime_error("Delegate called without being bound")
     {}
 
-    //==============================================================================================
-    // functions : make Delegate
-    //==============================================================================================
+    //==================================================================================================================
+    // Functions : MakeDelegate
+    //==================================================================================================================
 
     template <auto Function>
     inline constexpr auto MakeDelegate() -> FunctionBindTarget<Function>
@@ -115,15 +113,14 @@ namespace Lumy
     }
 
     template <auto MemberFunction, typename Class>
-    inline constexpr auto
-        MakeDelegate(Class* instance) -> MemberBindTarget<MemberFunction, Class>
+    inline constexpr auto MakeDelegate(Class* instance) -> MemberBindTarget<MemberFunction, Class>
     {
         return {instance};
     }
 
-    //==============================================================================================
-    // class : Delegate
-    //==============================================================================================
+    //==================================================================================================================
+    // Class : Delegate
+    //==================================================================================================================
 
     template <typename R, typename... Args>
     template <auto Function>
@@ -134,16 +131,14 @@ namespace Lumy
 
     template <typename R, typename... Args>
     template <auto MemberFunction, typename Class>
-    inline constexpr Delegate<R(Args...)>::Delegate(
-        MemberBindTarget<MemberFunction, Class> target) noexcept
+    inline constexpr Delegate<R(Args...)>::Delegate(MemberBindTarget<MemberFunction, Class> target) noexcept
     {
         Bind<MemberFunction, Class>(target.Instance);
     }
 
     template <typename R, typename... Args>
     template <auto MemberFunction, typename Class>
-    inline constexpr Delegate<R(Args...)>::Delegate(
-        MemberBindTarget<MemberFunction, const Class> target) noexcept
+    inline constexpr Delegate<R(Args...)>::Delegate(MemberBindTarget<MemberFunction, const Class> target) noexcept
     {
         Bind<MemberFunction, const Class>(target.Instance);
     }
@@ -156,15 +151,13 @@ namespace Lumy
     }
 
     template <typename R, typename... Args>
-    inline constexpr auto
-        Delegate<R(Args...)>::operator==(const Delegate& rhs) const noexcept -> bool
+    inline constexpr auto Delegate<R(Args...)>::operator==(const Delegate& rhs) const noexcept -> bool
     {
         return m_Stub == rhs.m_Stub and m_Instance == rhs.m_Instance;
     }
 
     template <typename R, typename... Args>
-    inline constexpr auto
-        Delegate<R(Args...)>::operator!=(const Delegate& rhs) const noexcept -> bool
+    inline constexpr auto Delegate<R(Args...)>::operator!=(const Delegate& rhs) const noexcept -> bool
     {
         return !operator==(rhs);
     }
@@ -174,9 +167,8 @@ namespace Lumy
     inline constexpr auto Delegate<R(Args...)>::Bind() noexcept -> void
     {
         m_Instance = nullptr;
-        m_Stub = static_cast<StubFunction>([](const void*, Args... args) -> ReturnType {
-            return std::invoke(Function, std::forward<Args>(args)...);
-        });
+        m_Stub = static_cast<StubFunction>(
+            [](const void*, Args... args) -> ReturnType { return std::invoke(Function, std::forward<Args>(args)...); });
     }
 
     template <typename R, typename... Args>
@@ -202,16 +194,12 @@ namespace std
     template <typename R, typename... Args>
     struct hash<Lumy::Delegate<R(Args...)>>
     {
-        static size_t hash_combine(size_t seed, size_t v)
-        {
-            return seed ^= v + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
+        static size_t hash_combine(size_t seed, size_t v) { return seed ^= v + 0x9e3779b9 + (seed << 6) + (seed >> 2); }
 
         size_t operator()(const Lumy::Delegate<R(Args...)>& Delegate) const noexcept
         {
             size_t a = std::hash<const void*> {}(Delegate.m_Instance);
-            size_t b =
-                std::hash<typename Lumy::Delegate<R(Args...)>::StubFunction> {}(Delegate.m_Stub);
+            size_t b = std::hash<typename Lumy::Delegate<R(Args...)>::StubFunction> {}(Delegate.m_Stub);
             return hash_combine(a, b);
         }
     };

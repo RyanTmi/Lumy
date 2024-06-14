@@ -3,13 +3,13 @@
 #include "LumyEngine/Core/Event/Event.hpp"
 #include "LumyEngine/Core/Input/KeyCode.hpp"
 
-#include <ostream>
+#include <format>
 
 namespace Lumy
 {
-    //==============================================================================================
+    //==================================================================================================================
     // Struct : KeyPressEvent
-    //==============================================================================================
+    //==================================================================================================================
 
     struct KeyPressEvent final
     {
@@ -22,14 +22,9 @@ namespace Lumy
         {}
     };
 
-    inline std::ostream& operator<<(std::ostream& out, KeyPressEvent e)
-    {
-        return out << "KeyPressEvent: " << static_cast<int>(e.Key);
-    }
-
-    //==============================================================================================
+    //==================================================================================================================
     // Struct : KeyReleaseEvent
-    //==============================================================================================
+    //==================================================================================================================
 
     struct KeyReleaseEvent final
     {
@@ -41,9 +36,37 @@ namespace Lumy
             : Key(key)
         {}
     };
+}
 
-    inline std::ostream& operator<<(std::ostream& out, KeyReleaseEvent e)
+namespace std
+{
+    //==================================================================================================================
+    // Struct : KeyPressEvent
+    //==================================================================================================================
+
+    template <>
+    struct formatter<Lumy::KeyPressEvent>
     {
-        return out << "KeyPressEvent: " << static_cast<int>(e.Key);
-    }
+        constexpr auto parse(auto& context) { return context.begin(); }
+
+        auto format(const Lumy::KeyPressEvent& e, auto& context) const
+        {
+            return std::format_to(context.out(), "KeyPressEvent: {}", static_cast<int>(e.Key));
+        }
+    };
+
+    //==================================================================================================================
+    // Struct : KeyReleaseEvent
+    //==================================================================================================================
+
+    template <>
+    struct formatter<Lumy::KeyReleaseEvent>
+    {
+        constexpr auto parse(auto& context) { return context.begin(); }
+
+        auto format(const Lumy::KeyReleaseEvent& e, auto& context) const
+        {
+            return std::format_to(context.out(), "KeyReleaseEvent: {}", static_cast<int>(e.Key));
+        }
+    };
 }

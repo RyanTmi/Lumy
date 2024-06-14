@@ -1,6 +1,6 @@
 #include "LumyEngine/Platform/Platform.hpp"
 
-#include "LumyEngine/Debug/Logger.hpp"
+#include "LumyEngine/Debug/Log.hpp"
 #include "LumyEngine/Platform/MacOS/MacOSApplicationDelegate.hpp"
 #include "LumyEngine/Platform/MacOS/MacOSAutoreleasePool.hpp"
 
@@ -86,5 +86,10 @@ namespace Lumy
     auto Platform::ProcessorCount() -> UInt8
     {
         return static_cast<UInt8>([[NSProcessInfo processInfo] processorCount]);
+    }
+
+    auto Platform::GetRequiredExtensionNames(std::vector<const char*>& names) -> void
+    {
+        names.push_back("VK_EXT_metal_surface");
     }
 }

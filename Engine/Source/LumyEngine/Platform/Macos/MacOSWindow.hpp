@@ -1,14 +1,21 @@
 #pragma once
 
-#include "LumyEngine/Platform/MacOS/MacOSContentView.hpp"
-#include "LumyEngine/Platform/MacOS/MacOSWindowDelegate.hpp"
 #include "LumyEngine/Platform/Window.hpp"
 
-#import <QuartzCore/CAMetalLayer.h>
+#import <AppKit/NSWindow.h>
+
+@class MacOSWindowDelegate;
+@class MacOSContentView;
+@class CAMetalLayer;
 
 @interface MacOSWindow : NSWindow
 {}
 @end
+
+namespace CA
+{
+    class MetalLayer;
+}
 
 namespace Lumy
 {
@@ -30,9 +37,8 @@ namespace Lumy
         auto Focus() -> void;
         auto Maximize() -> void;
 
-    public:
         auto FramebufferSize() const -> std::pair<UInt32, UInt32>;
-        auto SetLayer(CAMetalLayer* layer) -> void;
+        auto GetLayer() -> CA::MetalLayer*;
 
     private:
         MacOSWindow* m_Window;

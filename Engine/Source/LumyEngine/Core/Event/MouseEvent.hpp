@@ -3,13 +3,13 @@
 #include "LumyEngine/Core/Event/Event.hpp"
 #include "LumyEngine/Core/Input/MouseButton.hpp"
 
-#include <ostream>
+#include <format>
 
 namespace Lumy
 {
-    //==============================================================================================
+    //==================================================================================================================
     // Struct : MouseButtonPressEvent
-    //==============================================================================================
+    //==================================================================================================================
 
     struct MouseButtonPressEvent final
     {
@@ -22,14 +22,9 @@ namespace Lumy
         {}
     };
 
-    inline std::ostream& operator<<(std::ostream& out, MouseButtonPressEvent e)
-    {
-        return out << "MouseButtonPressEvent: " << static_cast<int>(e.Button);
-    }
-
-    //==============================================================================================
+    //==================================================================================================================
     // Struct : MouseButtonReleaseEvent
-    //==============================================================================================
+    //==================================================================================================================
 
     struct MouseButtonReleaseEvent final
     {
@@ -42,14 +37,9 @@ namespace Lumy
         {}
     };
 
-    inline std::ostream& operator<<(std::ostream& out, MouseButtonReleaseEvent e)
-    {
-        return out << "MouseButtonReleaseEvent: " << static_cast<int>(e.Button);
-    }
-
-    //==============================================================================================
+    //==================================================================================================================
     // Struct : MouseMoveEvent
-    //==============================================================================================
+    //==================================================================================================================
 
     struct MouseMoveEvent final
     {
@@ -63,14 +53,9 @@ namespace Lumy
         {}
     };
 
-    inline std::ostream& operator<<(std::ostream& out, MouseMoveEvent e)
-    {
-        return out << "MouseMoveEvent: (" << e.X << ", " << e.Y << ")";
-    }
-
-    //==============================================================================================
+    //==================================================================================================================
     // Struct : MouseScrollEvent
-    //==============================================================================================
+    //==================================================================================================================
 
     struct MouseScrollEvent final
     {
@@ -83,9 +68,67 @@ namespace Lumy
             : XOffset(xOffset), YOffset(yOffset)
         {}
     };
+}
 
-    inline std::ostream& operator<<(std::ostream& out, MouseScrollEvent e)
+namespace std
+{
+    //==================================================================================================================
+    // Struct : MouseButtonPressEvent
+    //==================================================================================================================
+
+    template <>
+    struct formatter<Lumy::MouseButtonPressEvent>
     {
-        return out << "MouseScrollEvent: (" << e.XOffset << ", " << e.YOffset << ")";
-    }
+        constexpr auto parse(auto& context) { return context.begin(); }
+
+        auto format(const Lumy::MouseButtonPressEvent& e, auto& context) const
+        {
+            return std::format_to(context.out(), "MouseButtonPressEvent: {}", static_cast<int>(e.Button));
+        }
+    };
+
+    //==================================================================================================================
+    // Struct : MouseButtonReleaseEvent
+    //==================================================================================================================
+
+    template <>
+    struct formatter<Lumy::MouseButtonReleaseEvent>
+    {
+        constexpr auto parse(auto& context) { return context.begin(); }
+
+        auto format(const Lumy::MouseButtonReleaseEvent& e, auto& context) const
+        {
+            return std::format_to(context.out(), "MouseButtonReleaseEvent: {}", static_cast<int>(e.Button));
+        }
+    };
+
+    //==================================================================================================================
+    // Struct : MouseMoveEvent
+    //==================================================================================================================
+
+    template <>
+    struct formatter<Lumy::MouseMoveEvent>
+    {
+        constexpr auto parse(auto& context) { return context.begin(); }
+
+        auto format(const Lumy::MouseMoveEvent& e, auto& context) const
+        {
+            return std::format_to(context.out(), "MouseMoveEvent: ({}, {})", e.X, e.Y);
+        }
+    };
+
+    //==================================================================================================================
+    // Struct : MouseScrollEvent
+    //==================================================================================================================
+
+    template <>
+    struct formatter<Lumy::MouseScrollEvent>
+    {
+        constexpr auto parse(auto& context) { return context.begin(); }
+
+        auto format(const Lumy::MouseScrollEvent& e, auto& context) const
+        {
+            return std::format_to(context.out(), "MouseScrollEvent: ({}, {})", e.XOffset, e.YOffset);
+        }
+    };
 }

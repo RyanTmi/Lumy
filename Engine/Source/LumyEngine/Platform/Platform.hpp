@@ -2,6 +2,9 @@
 
 #include "LumyEngine/Core/Types.hpp"
 
+// TODO: Do not expose all vector class
+#include <vector>
+
 namespace Lumy
 {
     class Platform final
@@ -16,5 +19,8 @@ namespace Lumy
         static auto PollEvents() -> bool;
 
         static auto ProcessorCount() -> UInt8;
+
+        // NOTE: Used for Vulkan
+        static auto GetRequiredExtensionNames(std::vector<const char*>& names) -> void;
     };
 }

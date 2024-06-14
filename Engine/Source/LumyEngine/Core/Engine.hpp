@@ -4,16 +4,20 @@
 #include "LumyEngine/Core/Event/WindowEvent.hpp"
 #include "LumyEngine/Platform/Platform.hpp"
 
+#include <string_view>
+
 int main(int argc, char** argv);
 
 namespace Lumy
 {
     class Window;
-    
+
     class Engine final
     {
     public:
         static auto GetWindow() -> Window&;
+
+        static auto ApplicationName() -> std::string_view;
 
     private:
         static auto Initialize(Application& application) -> bool;

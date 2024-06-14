@@ -3,6 +3,7 @@
 
 *.xcodeproj/
 *.xcworkspace/
+*.metallib
 .DS_Store
 
 Makefile

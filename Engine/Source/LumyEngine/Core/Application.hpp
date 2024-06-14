@@ -3,14 +3,17 @@
 #include "LumyEngine/Platform/Platform.hpp"
 #include "LumyEngine/Platform/Window.hpp"
 
+#include <string_view>
+
 namespace Lumy
 {
     struct ApplicationSpecification final
     {
+        std::string_view Name;
         WindowSpecification WindowSpec;
 
-        explicit ApplicationSpecification(const WindowSpecification& WindowSpec)
-            : WindowSpec(WindowSpec)
+        ApplicationSpecification(std::string_view name, const WindowSpecification& windowSpec)
+            : Name(name), WindowSpec(windowSpec)
         {}
     };
 

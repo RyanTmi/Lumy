@@ -2,18 +2,18 @@
 
 namespace Lumy
 {
-    using UInt8  = unsigned char;
+    using UInt8 = unsigned char;
     using UInt16 = unsigned short;
     using UInt32 = unsigned int;
     using UInt64 = unsigned long long;
 
-    using Int8  = signed char;
+    using Int8 = signed char;
     using Int16 = short;
     using Int32 = int;
     using Int64 = long long;
 
-    using USize = unsigned long long;
-    using Size  = long long;
+    using Size = unsigned long long;
+    using SSize = long long;
 
     using Float32 = float;
     using Float64 = double;
@@ -29,8 +29,8 @@ namespace Lumy
     static_assert(sizeof(Int32) == 4, "Size of Int32 should be 4 bytes");
     static_assert(sizeof(Int64) == 8, "Size of Int64 should be 8 bytes");
 
-    static_assert(sizeof(USize) == 8, "Size of USize should be 8 bytes");
     static_assert(sizeof(Size) == 8, "Size of Size should be 8 bytes");
+    static_assert(sizeof(SSize) == 8, "Size of SSize should be 8 bytes");
 
     static_assert(sizeof(Float32) == 4, "Size of Float32 should be 4 bytes");
     static_assert(sizeof(Float64) == 8, "Size of Float64 should be 8 bytes");

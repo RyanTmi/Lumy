@@ -1,3 +1,5 @@
+local vulkan_sdk = os.getenv("VULKAN_SDK")
+
 project "TestsApplication"
     kind "ConsoleApp"
     language "C++"
@@ -15,8 +17,12 @@ project "TestsApplication"
         "%{wks.location}/Engine/Source",
     }
 
+    libdirs {
+        vulkan_sdk .. "/lib",
+    }
+
     links {
-        "Engine"
+        "Engine",
     }
 
     filter { "system:macosx" }
@@ -28,7 +34,6 @@ project "TestsApplication"
             "AppKit.framework",
             "Foundation.framework",
             "QuartzCore.framework",
-            "GameController.framework",
             "Cocoa.framework",
         }
 

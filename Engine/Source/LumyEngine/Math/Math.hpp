@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Traits.hpp"
+#include "Vector2.hpp"
+#include "Vector3.hpp"
+#include "Matrix3.hpp"
+#include "Matrix4.hpp"
 
 namespace Lumy
 {
-    template <Numeric T>
+    template <Math::Numeric T>
     struct Rectangle final
     {
         T X;

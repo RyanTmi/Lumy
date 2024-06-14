@@ -5,4 +5,5 @@
 #include "LumyEngine/Core/Engine.hpp"
 #include "LumyEngine/Core/Input/Inputs.hpp"
 #include "LumyEngine/Core/Types.hpp"
-#include "LumyEngine/Debug/Logger.hpp"
+
+#include "LumyEngine/Debug/Log.hpp"

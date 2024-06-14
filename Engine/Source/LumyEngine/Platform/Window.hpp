@@ -26,7 +26,6 @@ namespace Lumy
     {
     public:
         Window() = default;
-        Window(const WindowSpecification& specification);
         ~Window();
 
     public:
@@ -34,7 +33,7 @@ namespace Lumy
         auto Destroy() -> void;
         
         template <typename T>
-        auto GetNativeWindow() const -> T* { return reinterpret_cast<T*>(m_NativeWindow); }
+        auto GetNativeWindow() -> T* { return reinterpret_cast<T*>(m_NativeWindow); }
 
     public:
         auto Size() const -> std::pair<UInt32, UInt32>;
@@ -42,6 +41,9 @@ namespace Lumy
         auto Show() -> void;
         auto Hide() -> void;
         auto Maximize() -> void;
+
+        auto GetSurface() -> void*;
+        auto GetFramebufferSize() -> std::pair<UInt32, UInt32>;
 
     private:
         void* m_NativeWindow = nullptr;

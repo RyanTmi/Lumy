@@ -14,7 +14,7 @@ project "Engine"
     }
 
     files {
-        "Source/**.hpp", "Source/**.cpp", "Source/**.mm" ,
+        "Source/**.hpp", "Source/**.cpp", "Source/**.mm",
     }
 
     includedirs {
@@ -24,15 +24,15 @@ project "Engine"
         vulkan_sdk .. "/include",
     }
 
-    -- links {
-    --     "vulkan",
-    -- }
+    libdirs {
+        vulkan_sdk .. "/lib",
+    }
 
     filter { "system:macosx" }
         systemversion "14.0"
 
         files {
-            "%{wks.location}/Assets/Shaders/*.metal"
+            "%{wks.location}/Assets/Shaders/Metal/*.metal"
         }
 
         links {
@@ -43,7 +43,14 @@ project "Engine"
             "QuartzCore.framework",
             "Cocoa.framework",
 
+            "libvulkan.dylib",
+            "libvulkan.1.dylib",
             "metal-cpp",
+        }
+
+        embed {
+            "libvulkan.dylib",
+            "libvulkan.1.dylib",
         }
 
         xcodebuildsettings {

@@ -1,10 +1,11 @@
 #include "LumyEngine/Core/Engine.hpp"
 
-#include "LumyEngine/Core/Event/CoreEvents.hpp"
+#include "LumyEngine/Core/Event/EventManager.hpp"
 #include "LumyEngine/Core/Input/Inputs.hpp"
-#include "LumyEngine/Debug/Logger.hpp"
+#include "LumyEngine/Debug/Log.hpp"
 #include "LumyEngine/Platform/Window.hpp"
 #include "LumyEngine/Renderer/Renderer.hpp"
+#include "Engine.hpp"
 
 namespace Lumy
 {
@@ -12,7 +13,7 @@ namespace Lumy
     {
         bool IsRunning = false;
         bool IsSuspended = true;
-        Window MainWindow;
+        Window MainWindow;  // NOTE: Move window management to Platform ?
         std::unique_ptr<Application> ClientApplication;
     };
 
@@ -23,31 +24,30 @@ namespace Lumy
         return s_Context->MainWindow;
     }
 
+    auto Engine::ApplicationName() -> std::string_view
+    {
+        return s_Context->ClientApplication->Specification().Name;
+    }
+
     auto Engine::Initialize(Application& application) -> bool
     {
         if (!Platform::Initialize())
         {
-            Log::Fatal("Failed to Initialize Platform");
+            Log::Fatal("Failed to initialize Platform");
             return false;
         }
 
-        if (!CoreEvents::Initialize())
+        if (!EventManager::Initialize())
         {
-            Log::Fatal("Failed to Initialize Application Event");
+            Log::Fatal("Failed to initialize Application Event");
             return false;
         }
-        CoreEvents::Add<WindowCloseEvent>(MakeDelegate<&Engine::OnWindowClose>());
-        CoreEvents::Add<WindowResizeEvent>(MakeDelegate<&Engine::OnWindowResize>());
+        EventManager::Add<WindowCloseEvent>(MakeDelegate<&Engine::OnWindowClose>());
+        EventManager::Add<WindowResizeEvent>(MakeDelegate<&Engine::OnWindowResize>());
 
         if (!Inputs::Initialize())
         {
-            Log::Fatal("Failed to Initialize Input");
-            return false;
-        }
-
-        if (!Renderer::Initialize())
-        {
-            Log::Fatal("Failed to initialize Renderer");
+            Log::Fatal("Failed to initialize Input");
             return false;
         }
 
@@ -56,34 +56,40 @@ namespace Lumy
         s_Context->MainWindow.Create(application.Specification().WindowSpec);
         if (!s_Context->ClientApplication->Initialize())
         {
-            Log::Fatal("Failed to Initialize Application");
+            Log::Fatal("Failed to initialize Application");
             return false;
         }
-        s_Context->IsRunning = true;
         s_Context->IsSuspended = false;
+
+        if (!Renderer::Initialize())
+        {
+            Log::Fatal("Failed to initialize Renderer");
+            return false;
+        }
 
         return true;
     }
 
     auto Engine::Shutdown() -> void
     {
+        Renderer::Shutdown();
+
         s_Context->ClientApplication->Shutdown();
         s_Context->MainWindow.Destroy();
         delete s_Context;
 
-        Renderer::Shutdown();
-
         Inputs::Shutdown();
 
-        CoreEvents::Remove<WindowCloseEvent>(MakeDelegate<&Engine::OnWindowClose>());
-        CoreEvents::Remove<WindowResizeEvent>(MakeDelegate<&Engine::OnWindowResize>());
-        CoreEvents::Shutdown();
+        EventManager::Remove<WindowCloseEvent>(MakeDelegate<&Engine::OnWindowClose>());
+        EventManager::Remove<WindowResizeEvent>(MakeDelegate<&Engine::OnWindowResize>());
+        EventManager::Shutdown();
 
         Platform::Shutdown();
     }
 
     auto Engine::Run() -> void
     {
+        s_Context->IsRunning = true;
         // TODO: Add delta time
         Float64 deltaTime = 0.0;
 
@@ -124,7 +130,7 @@ namespace Lumy
     auto Engine::OnWindowResize(const WindowResizeEvent& e) -> bool
     {
         s_Context->IsSuspended = (e.Width == 0 or e.Height == 0);
-        Log::Debug("{}", e);
+        Renderer::OnResize(e.Width, e.Height);
         return false;
     }
 }

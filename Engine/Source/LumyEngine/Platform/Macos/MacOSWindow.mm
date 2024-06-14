@@ -1,12 +1,18 @@
 #include "LumyEngine/Platform/Window.hpp"
 
-#include "LumyEngine/Debug/Logger.hpp"
+#include "LumyEngine/Debug/Log.hpp"
 #include "LumyEngine/Platform/MacOS/MacOSAutoreleasePool.hpp"
+#include "LumyEngine/Platform/MacOS/MacOSContentView.hpp"
 #include "LumyEngine/Platform/MacOS/MacOSWindow.hpp"
+#include "LumyEngine/Platform/MacOS/MacOSWindowDelegate.hpp"
 
-//==================================================================================================
+#include "QuartzCore/CAMetalLayer.hpp"
+
+#import <QuartzCore/CAMetalLayer.h>
+
+//======================================================================================================================
 // Class : MacOSWindow
-//==================================================================================================
+//======================================================================================================================
 
 @implementation MacOSWindow
 
@@ -24,9 +30,9 @@
 
 namespace Lumy
 {
-    //==============================================================================================
+    //==================================================================================================================
     // Class : MacOSNativeWindow
-    //==============================================================================================
+    //==================================================================================================================
 
     MacOSNativeWindow::~MacOSNativeWindow()
     {
@@ -92,12 +98,20 @@ namespace Lumy
             // NOTE: Needed for manually release MacOSWindow in ~MacOSNativeWindow()
             m_Window.releasedWhenClosed = NO;
 
+            m_Layer = [CAMetalLayer layer];
+            if (!m_Layer)
+            {
+                Log::Error("Cocoa: Failed to create metal layer");
+                return false;
+            }
+
             m_View = [[MacOSContentView alloc] initWithWindow:m_Window frame:contentRect];
             if (!m_View)
             {
                 Log::Error("Cocoa: Failed to create content view");
                 return false;
             }
+            [m_View setLayer:m_Layer];
 
             [m_Window center];
             [m_Window setLevel:NSNormalWindowLevel];
@@ -113,13 +127,9 @@ namespace Lumy
         return true;
     }
 
-    auto MacOSNativeWindow::SetLayer(CAMetalLayer* layer) -> void
+    auto MacOSNativeWindow::GetLayer() -> CA::MetalLayer*
     {
-        @autoreleasepool
-        {
-            m_Layer = layer;
-            [m_View setLayer:layer];
-        }
+        return (__bridge CA::MetalLayer*) m_Layer;
     }
 
     auto MacOSNativeWindow::Size() const -> std::pair<UInt32, UInt32>
@@ -214,9 +224,9 @@ namespace Lumy
         }
     }
 
-    //==============================================================================================
+    //==================================================================================================================
     // Class : Window
-    //==============================================================================================
+    //==================================================================================================================
 
     Window::~Window()
     {
@@ -293,5 +303,25 @@ namespace Lumy
         }
         auto nativeWindow = reinterpret_cast<MacOSNativeWindow*>(m_NativeWindow);
         return nativeWindow->Maximize();
+    }
+
+    auto Window::GetSurface() -> void*
+    {
+        if (!m_NativeWindow)
+        {
+            return nullptr;
+        }
+        auto nativeWindow = reinterpret_cast<MacOSNativeWindow*>(m_NativeWindow);
+        return nativeWindow->GetLayer();
+    }
+    
+    auto Window::GetFramebufferSize() -> std::pair<UInt32, UInt32>
+    {
+        if (!m_NativeWindow)
+        {
+            return {0, 0};
+        }
+        auto nativeWindow = reinterpret_cast<MacOSNativeWindow*>(m_NativeWindow);
+        return nativeWindow->FramebufferSize();
     }
 }

@@ -1,6 +1,6 @@
 #include "LumyEngine/Platform/MacOS/MacOSWindowDelegate.hpp"
 
-#include "LumyEngine/Core/Event/CoreEvents.hpp"
+#include "LumyEngine/Core/Event/EventManager.hpp"
 #include "LumyEngine/Core/Event/WindowEvent.hpp"
 
 using namespace Lumy;
@@ -9,7 +9,7 @@ using namespace Lumy;
 
 - (BOOL)windowShouldClose:(id)sender
 {
-    CoreEvents::Fire<WindowCloseEvent>();
+    EventManager::Fire<WindowCloseEvent>();
     return YES;
 }
 
@@ -23,7 +23,7 @@ using namespace Lumy;
 
     auto width = static_cast<UInt16>(size.width);
     auto height = static_cast<UInt16>(size.height);
-    CoreEvents::Fire<WindowResizeEvent>(width, height);
+    EventManager::Fire<WindowResizeEvent>(width, height);
 }
 
 - (void)windowDidMove:(NSNotification*)notification
@@ -31,7 +31,7 @@ using namespace Lumy;
 
 - (void)windowDidMiniaturize:(NSNotification*)notification
 {
-    CoreEvents::Fire<WindowResizeEvent>(0, 0);
+    EventManager::Fire<WindowResizeEvent>(0, 0);
 }
 
 - (void)windowDidDeminiaturize:(NSNotification*)notification
@@ -44,7 +44,7 @@ using namespace Lumy;
 
     auto width = static_cast<UInt16>(size.width);
     auto height = static_cast<UInt16>(size.height);
-    CoreEvents::Fire<WindowResizeEvent>(width, height);
+    EventManager::Fire<WindowResizeEvent>(width, height);
 }
 
 - (void)windowDidChangeScreen:(NSNotification*)notification
@@ -57,7 +57,7 @@ using namespace Lumy;
 
     auto width = static_cast<UInt16>(size.width);
     auto height = static_cast<UInt16>(size.height);
-    CoreEvents::Fire<WindowResizeEvent>(width, height);
+    EventManager::Fire<WindowResizeEvent>(width, height);
 }
 
 - (void)windowDidBecomeKey:(NSNotification*)notification

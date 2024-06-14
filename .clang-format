@@ -1,7 +1,7 @@
 ---
 BasedOnStyle: LLVM
 AccessModifierOffset: -4
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: AlwaysBreak
 AlignArrayOfStructures: Right
 AlignConsecutiveAssignments:
   Enabled: false
@@ -50,8 +50,8 @@ AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
-BinPackArguments: true
-BinPackParameters: true
+BinPackArguments: false
+BinPackParameters: false
 BitFieldColonSpacing: Both
 BraceWrapping:
   AfterCaseLabel: true
@@ -70,7 +70,7 @@ BraceWrapping:
   BeforeWhile: false
   IndentBraces: false
   SplitEmptyFunction: false
-  SplitEmptyRecord: true
+  SplitEmptyRecord: false
   SplitEmptyNamespace: true
 BreakAfterAttributes: Never
 BreakAfterJavaFieldAnnotations: false
@@ -83,7 +83,7 @@ BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
 BreakStringLiterals: true
-ColumnLimit: 100
+ColumnLimit: 120
 CompactNamespaces: true
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4

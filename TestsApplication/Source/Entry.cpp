@@ -4,7 +4,9 @@
 
 Lumy::Application* Lumy::MakeApplication()
 {
-    Lumy::ApplicationSpecification applicationSpecification(
-        {"Lumy test game", Rectangle<UInt32>(0, 0, 900, 600)});
+    const char* applicationName = "Lumy test game";
+    Lumy::WindowSpecification windowSpec(applicationName, {0, 0, 900, 600});
+    Lumy::ApplicationSpecification applicationSpecification(applicationName, windowSpec);
+
     return new Game(applicationSpecification);
 }
