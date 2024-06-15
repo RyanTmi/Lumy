@@ -24,11 +24,13 @@ namespace Lumy
         auto Begin(CA::MetalDrawable* drawable) -> void;
         auto End() -> void;
 
+        auto RenderCommandEncoder() -> MTL::RenderCommandEncoder* { return m_CommandEncoder; }
+
     private:
         MetalDevice* m_Device;
         MTL::CommandBuffer* m_CommandBuffer;
 
-        CA::MetalDrawable* m_CurrenDrawable;
+        CA::MetalDrawable* m_CurrentDrawable;
         MTL::RenderPassDescriptor* m_Descriptor;
         MTL::RenderCommandEncoder* m_CommandEncoder;
     };

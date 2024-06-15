@@ -20,7 +20,7 @@ namespace Lumy
 
     auto MetalRenderPass::Begin(CA::MetalDrawable* drawable) -> void
     {
-        m_CurrenDrawable = drawable;
+        m_CurrentDrawable = drawable;
         m_CommandBuffer = m_Device->CommandQueue()->commandBuffer();
         m_CommandEncoder = m_CommandBuffer->renderCommandEncoder(m_Descriptor);
         m_Descriptor->colorAttachments()->object(0)->setTexture(drawable->texture());
@@ -30,7 +30,7 @@ namespace Lumy
     {
         m_CommandEncoder->endEncoding();
 
-        m_CommandBuffer->presentDrawable(m_CurrenDrawable);
+        m_CommandBuffer->presentDrawable(m_CurrentDrawable);
         m_CommandBuffer->commit();
         m_CommandBuffer->waitUntilCompleted();
         m_CommandBuffer->release();

@@ -25,6 +25,14 @@ namespace Lumy
 
         m_Context.RenderPass().Begin(m_Context.CurrentDrawable());
 
+        auto renderCommandEncoder = m_Context.RenderPass().RenderCommandEncoder();
+        m_Context.GraphicsPipeline().Bind(renderCommandEncoder);
+
+        renderCommandEncoder->setVertexBuffer(m_Context.VertexBuffer(), 0, 0);
+        renderCommandEncoder->setVertexBuffer(m_Context.ColorBuffer(), 0, 1);
+        renderCommandEncoder
+            ->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle, 6, MTL::IndexTypeUInt16, m_Context.IndexBuffer(), 0);
+
         return true;
     }
 
