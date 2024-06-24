@@ -3,6 +3,8 @@
 #include "LumyEngine/Renderer/RendererAPI.hpp"
 #include "LumyEngine/Renderer/Metal/MetalContext.hpp"
 
+// #include "LumyEngine/Math/Math.hpp"
+
 namespace Lumy
 {
     class MetalRendererAPI final : public RendererAPI
@@ -19,9 +21,11 @@ namespace Lumy
         auto BeginFrame() -> bool override;
         auto EndFrame() -> bool override;
 
+        auto UpdateUniforms(const Matrix4x4f& projection, const Matrix4x4f& view) -> void override;
+
         auto OnResize(UInt16 width, UInt16 height) -> void override;
 
     private:
-        MetalContext m_Context {};
+        MetalContext m_Context;
     };
 }

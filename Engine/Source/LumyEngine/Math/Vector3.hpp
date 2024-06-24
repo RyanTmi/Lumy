@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Vector.hpp"
+#include "LumyEngine/Math/Vector.hpp"
 
-namespace Lumy::Math
+namespace Lumy
 {
     //==================================================================================================================
     // Struct : Vector
@@ -119,7 +119,7 @@ namespace Lumy::Math
 
     template <Numeric T>
     inline constexpr Vector<T, 3>::Vector(T x) noexcept
-        : Vector(x, x, x)
+        : Vector<T, 3>(x, x, x)
     {}
 
     template <Numeric T>
@@ -234,10 +234,12 @@ namespace Lumy::Math
         v.Z /= s;
         return v;
     }
-}
 
-namespace Lumy
-{
-    using Vector3 = Math::Vector<Float32, 3>;
-    using Vector3I = Math::Vector<Int32, 3>;
+    template <Numeric T>
+    using Vector3 = Vector<T, 3>;
+
+    using Vector3d = Vector3<Float64>;
+    using Vector3f = Vector3<Float32>;
+    using Vector3i = Vector3<Int32>;
+    using Vector3b = Vector3<bool>;
 }

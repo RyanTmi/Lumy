@@ -20,20 +20,4 @@ namespace Lumy
         Float32 a = t * lhs.A + (1 - t) * rhs.A;
         return {r, g, b, a};
     }
-
-    constexpr Color::Color() noexcept
-        : R(0.0f), G(0.0f), B(0.0f), A(1.0f)
-    {}
-
-    constexpr Color::Color(Float32 r, Float32 g, Float32 b, Float32 a) noexcept
-        : R(r), G(g), B(b), A(a)
-    {}
-
-    constexpr Color::Color(UInt8 r, UInt8 g, UInt8 b, UInt8 a) noexcept
-        : R(r / 255.0f), G(g / 255.0f), B(b / 255.0f), A(a / 255.0f)
-    {}
-
-    constexpr Color::Color(const Vector4& color) noexcept
-        : R(color[0]), G(color[1]), B(color[2]), A(color[3])
-    {}
 }

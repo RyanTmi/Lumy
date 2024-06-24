@@ -20,7 +20,7 @@ namespace Lumy
         m_Layer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
         m_Layer->setFramebufferOnly(true);
 
-        m_MainRenderPass.Create(&m_Device, Color::Purple);
+        m_MainRenderPass.Create(&m_Device, Color(0.2f, 0.2f, 0.2f, 1.0f));
 
         NS::URL* url = NS::URL::fileURLWithPath(
             NS::String::string("Assets/Shaders/Metal/default.metallib", NS::ASCIIStringEncoding));
@@ -36,11 +36,15 @@ namespace Lumy
         m_GraphicsPipeline.Create(m_Device, m_Shader, m_Layer->pixelFormat());
 
         // TODO: Temporary
-        static Vector3 quad[] = {
-            {-0.5f, -0.5, 0.0f},
-            { 0.5f, -0.5, 0.0f},
-            { 0.5f,  0.5, 0.0f},
-            {-0.5f,  0.5, 0.0f},
+        static Vector3f quad[] = {
+            {10 * -0.5f,10*  -0.5f, 10.0f},
+            {10 * 0.5f, 10* -0.5f,  10.0f},
+            {10 * 0.5f, 10* 0.5f,   10.0f},
+            {10 * -0.5f,10*  0.5f,  10.0f},
+            // {2.5f, 2.5f, 1.5f},
+            // {3.5f, 2.5f, 1.5f},
+            // {3.5f, 3.5f, 1.5f},
+            // {2.5f, 3.5f, 1.5f},
         };
         static Color colors[] = {
             Color::Blue,
@@ -53,13 +57,15 @@ namespace Lumy
         m_VertexBuffer = m_Device.Handle()->newBuffer(quad, sizeof(quad), MTL::ResourceStorageModeShared);
         m_VertexColorBuffer = m_Device.Handle()->newBuffer(colors, sizeof(colors), MTL::ResourceStorageModeShared);
         m_IndexBuffer = m_Device.Handle()->newBuffer(indices, sizeof(indices), MTL::ResourceStorageModeShared);
+        m_UniformsBuffer = m_Device.Handle()->newBuffer(2 * sizeof(Matrix4x4f), MTL::ResourceStorageModeShared);
         // TODO: End temporary
-        
+
         return true;
     }
 
     auto MetalContext::Shutdown() -> void
     {
+        m_UniformsBuffer->release();
         m_IndexBuffer->release();
         m_VertexColorBuffer->release();
         m_VertexBuffer->release();
@@ -85,5 +91,21 @@ namespace Lumy
     {
         m_Drawable = m_Layer->nextDrawable();
         return m_Drawable != nullptr;
+    }
+
+    auto MetalContext::UpdateUniforms(const Matrix4x4f& projection, const Matrix4x4f& view) -> void
+    {
+        m_ViewProjection = view * projection;
+
+        Matrix4x4f data[1] = {m_ViewProjection};
+        std::memcpy(m_UniformsBuffer->contents(), data, sizeof(data));
+        m_UniformsBuffer->didModifyRange(NS::Range(0, sizeof(data)));
+    }
+
+    auto MetalContext::FrameBufferSize() const -> Vector2f
+    {
+        auto width = static_cast<Float32>(m_Layer->drawableSize().width);
+        auto height = static_cast<Float32>(m_Layer->drawableSize().height);
+        return {width, height};
     }
 }

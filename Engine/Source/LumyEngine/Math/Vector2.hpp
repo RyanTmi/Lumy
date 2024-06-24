@@ -2,7 +2,7 @@
 
 #include "Vector.hpp"
 
-namespace Lumy::Math
+namespace Lumy
 {
     //==================================================================================================================
     // Struct : Vector
@@ -214,10 +214,12 @@ namespace Lumy::Math
         v.Y /= s;
         return v;
     }
-}
 
-namespace Lumy
-{
-    using Vector2 = Math::Vector<Float32, 2>;
-    using Vector2I = Math::Vector<Int32, 2>;
+    template <Numeric T>
+    using Vector2 = Vector<T, 2>;
+
+    using Vector2d = Vector2<Float64>;
+    using Vector2f = Vector2<Float32>;
+    using Vector2i = Vector2<Int32>;
+    using Vector2b = Vector2<bool>;
 }

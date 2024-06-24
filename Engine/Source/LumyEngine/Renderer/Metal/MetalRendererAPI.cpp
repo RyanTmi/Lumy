@@ -30,6 +30,7 @@ namespace Lumy
 
         renderCommandEncoder->setVertexBuffer(m_Context.VertexBuffer(), 0, 0);
         renderCommandEncoder->setVertexBuffer(m_Context.ColorBuffer(), 0, 1);
+        renderCommandEncoder->setVertexBuffer(m_Context.UniformsBuffer(), 0, 10);
         renderCommandEncoder
             ->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle, 6, MTL::IndexTypeUInt16, m_Context.IndexBuffer(), 0);
 
@@ -43,8 +44,30 @@ namespace Lumy
         return true;
     }
 
+    auto MetalRendererAPI::UpdateUniforms(const Matrix4x4f& projection, const Matrix4x4f& view) -> void
+    {
+        m_Context.UpdateUniforms(projection, view);
+    }
+
     auto MetalRendererAPI::OnResize(UInt16 width, UInt16 height) -> void
     {
         m_Context.Resize(width, height);
+
+        // TODO: Temporary
+        auto frameBufferSize = m_Context.FrameBufferSize();
+
+        Matrix4x4f projection =
+            Matrix4x4f::Perspective(DegToRad(90.0f), frameBufferSize.X / frameBufferSize.Y, 0.1, 100.0f);
+
+        Matrix4x4f rotation = Matrix4x4f::Rotate(Quaternionf::AxisAngle(-30.0f, Vector3f::Up));
+        Matrix4x4f transform = Matrix4x4f::Translate(Vector3f(0, 0, -1.0f)) * rotation;
+        Matrix4x4f view = transform.Inverse();
+
+        // Row Major -> Column Major for Metal API
+        projection = projection.Transposed();
+        view = view.Transposed();
+
+        UpdateUniforms(projection, view);
+        // TODO: End temporary
     }
 }

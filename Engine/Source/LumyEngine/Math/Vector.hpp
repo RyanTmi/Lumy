@@ -9,18 +9,10 @@
 #include <numeric>
 #include <type_traits>
 
-namespace Lumy::Math
+namespace Lumy
 {
     template <Numeric T, Size N>
     class Vector;
-
-    template <typename T>
-    struct IsVector : public std::false_type
-    {};
-
-    template <Numeric T, Size N>
-    struct IsVector<Vector<T, N>> : public std::true_type
-    {};
 
     template <Numeric T, Size N>
     constexpr auto operator+(const Vector<T, N>& lhs, const Vector<T, N>& rhs) noexcept -> Vector<T, N>;

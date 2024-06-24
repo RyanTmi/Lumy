@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LumyEngine/Math/Math.hpp"
 #include "LumyEngine/Renderer/Metal/MetalDevice.hpp"
 #include "LumyEngine/Renderer/Metal/MetalRenderPass.hpp"
 #include "LumyEngine/Renderer/Metal/MetalPipeline.hpp"
@@ -22,6 +23,8 @@ namespace Lumy
 
         auto Resize(UInt32 width, UInt32 height) -> void;
 
+        auto FrameBufferSize() const -> Vector2f;
+
     public:
         auto NextDrawable() -> bool;
 
@@ -37,19 +40,26 @@ namespace Lumy
 
         auto IndexBuffer() -> MTL::Buffer* { return m_IndexBuffer; }
 
+        auto UniformsBuffer() -> MTL::Buffer* { return m_UniformsBuffer; }
+
+        auto UpdateUniforms(const Matrix4x4f& projection, const Matrix4x4f& view) -> void;
+
     private:
-        MetalDevice m_Device;
-        MetalRenderPass m_MainRenderPass;
+        MetalDevice m_Device {};
+        MetalRenderPass m_MainRenderPass {};
 
-        CA::MetalLayer* m_Layer;
-        CA::MetalDrawable* m_Drawable;
+        CA::MetalLayer* m_Layer {};
+        CA::MetalDrawable* m_Drawable {};
 
-        MTL::Library* m_Library;
-        MetalGraphicsPipeline m_GraphicsPipeline;
-        MetalShader m_Shader;
+        MTL::Library* m_Library {};
+        MetalGraphicsPipeline m_GraphicsPipeline {};
+        MetalShader m_Shader {};
 
-        MTL::Buffer* m_VertexBuffer;
-        MTL::Buffer* m_VertexColorBuffer;
-        MTL::Buffer* m_IndexBuffer;
+        MTL::Buffer* m_VertexBuffer {};
+        MTL::Buffer* m_VertexColorBuffer {};
+        MTL::Buffer* m_IndexBuffer {};
+
+        MTL::Buffer* m_UniformsBuffer {};
+        Matrix4x4f m_ViewProjection;
     };
 }

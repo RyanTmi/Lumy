@@ -25,7 +25,7 @@ namespace Lumy
         vertexDescriptor->attributes()->object(1)->setOffset(0);
 
         vertexDescriptor->layouts()->object(0)->setStepFunction(MTL::VertexStepFunctionPerVertex);
-        vertexDescriptor->layouts()->object(0)->setStride(sizeof(Vector3));
+        vertexDescriptor->layouts()->object(0)->setStride(sizeof(Vector3f));
         vertexDescriptor->layouts()->object(1)->setStepFunction(MTL::VertexStepFunctionPerVertex);
         vertexDescriptor->layouts()->object(1)->setStride(sizeof(Color));
 

@@ -1,15 +1,20 @@
 #pragma once
 
-#include <concepts>
+#include "LumyEngine/Core/Types.hpp"
 
-namespace Lumy::Math
+#include <concepts>
+#include <limits>
+
+namespace Lumy
 {
     template <typename T>
     concept Integral = std::integral<T>;
 
     template <typename T>
-    concept FloatingPoint = std::floating_point<T>;
+    concept Real = std::floating_point<T>;
 
     template <typename T>
-    concept Numeric = Integral<T> or FloatingPoint<T>;
+    concept Numeric = Integral<T> or Real<T>;
+
+    constexpr Size DynamicExtend = std::numeric_limits<Size>::max();
 }
